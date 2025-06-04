@@ -1,12 +1,25 @@
 <nav class="nav-container">
   <div class="nav-content">
     <div></div>
-    <div class="logo">
+    <div class="logo-container">
       <h1>MEMEMUSEUM</h1>
+      <p class="subtitle">I Meme del Giorno</p>
+      <p class="welcome" *ngIf="currentUser$ | async as user">
+        Benvenuto, {{ user.username }}!
+      </p>
     </div>
     <div class="auth-buttons">
-      <button class="auth-button" (click)="showLogin()">Accedi</button>
-      <button class="auth-button" (click)="showRegister()">Registrati</button>
+      <!-- Bottoni per utente non autenticato -->
+      <ng-container *ngIf="!(isAuthenticated$ | async)">
+        <button class="auth-button" (click)="showLogin()">Accedi</button>
+        <button class="auth-button" (click)="showRegister()">Registrati</button>
+      </ng-container>
+
+      <!-- Bottoni per utente autenticato -->
+      <ng-container *ngIf="isAuthenticated$ | async">
+        <button class="auth-button logout" (click)="logout()">Logout</button>
+        <button class="auth-button" (click)="uploadMeme()">Upload Meme</button>
+      </ng-container>
     </div>
   </div>
 </nav>
