@@ -1,1 +1,24 @@
+@import "tailwindcss";
+
+/* Global styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: sans-serif;
+  background-color: rgb(24, 24, 24);
+  color: #3c3b3b;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1;
+  padding: 2rem;
+}
+
 /* You can add global styles to this file, and also import other style files */

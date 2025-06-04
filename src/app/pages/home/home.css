@@ -1,0 +1,86 @@
+.meme-feed {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  width: 100%;
+  padding: 2rem;
+}
+
+.meme-feed-item {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+#search-bar-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0 2rem;
+  position: relative;
+  max-width: 600px;
+  margin: 3rem auto 2rem auto;
+}
+
+#search-bar {
+  width: 100%;
+  padding: 1rem 1.5rem;
+  font-size: 1rem;
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50px;
+  transition: all 0.3s ease;
+}
+
+#search-bar:focus {
+  outline: none;
+  border-color: #6c63ff;
+  background-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 15px rgba(108, 99, 255, 0.2);
+}
+
+#search-button {
+  position: absolute;
+  right: 2.5rem;
+  background: none;
+  border: none;
+  color: #6c63ff;
+  padding: 0.75rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#order-toggle-container {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  padding-right: 2rem;
+}
+
+#order-toggle-button,
+#votes-toggle-button {
+  background: rgba(0, 0, 0, 0.2);
+  color: #fff;
+  border: none;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.9rem;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+#order-toggle-button:hover,
+#votes-toggle-button:hover {
+  transform: scale(1.1);
+  background: rgba(108, 99, 255, 0.2);
+  color: #6c63ff;
+}
+
+.active {
+  background: rgba(108, 99, 255, 0.3) !important;
+  color: #6c63ff !important;
+}

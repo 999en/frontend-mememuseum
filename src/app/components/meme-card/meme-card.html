@@ -1,0 +1,32 @@
+<div class="meme-container">
+  <div class="info-panel header">
+    <p class="author">{{ getUsername() }}</p>
+  </div>
+
+  <div class="content-wrapper">
+    <img [src]="meme.imageUrl" [alt]="meme.title">
+  </div>
+
+  <div class="info-panel footer">
+    <h2 class="title">{{ meme.title }}</h2>
+    
+    <div class="tags-and-votes">
+      <div class="tags-container">
+        @for (tag of meme.tags; track tag) {
+          <span class="tag">#{{ tag }}</span>
+        }
+      </div>
+
+      <div class="voting-container">
+        <button class="vote-button upvote" [class.active]="userVote === 'up'" (click)="onUpvote()">
+          <span class="vote-count upvotes">{{ meme.upvotes || 0 }}</span>
+          <span class="arrow up">↑</span>
+        </button>
+        <button class="vote-button downvote" [class.active]="userVote === 'down'" (click)="onDownvote()">
+          <span class="vote-count downvotes">{{ meme.downvotes || 0 }}</span>
+          <span class="arrow down">↓</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
