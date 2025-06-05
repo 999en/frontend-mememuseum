@@ -14,8 +14,22 @@
   </div>
 
   <div class="meme-feed">
-    @for (meme of memes; track meme._id) {
-      <app-meme-card [meme]="meme" />
-    }
+    <div *ngIf="isLoading" class="loading">
+      Caricamento meme...
+    </div>
+
+    <div *ngIf="error" class="error-message">
+      {{ error }}
+    </div>
+
+    <div *ngIf="!isLoading && !error && memes.length === 0" class="no-memes">
+      Nessun meme disponibile
+    </div>
+
+    <div *ngIf="!isLoading && memes.length > 0" class="meme-list">
+      <div *ngFor="let meme of memes" class="meme-feed-item">
+        <app-meme-card [meme]="meme"></app-meme-card>
+      </div>
+    </div>
   </div>
 </div>

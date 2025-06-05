@@ -14,7 +14,8 @@ export class MemeService {
       uploader: { _id: '1', username: 'user1' },
       upvotes: 10,
       downvotes: 2,
-      tags: ['funny', 'test']
+      tags: ['funny', 'test'],
+      createdAt: new Date()  // Add this line
     },
     {
       _id: '2',
@@ -23,7 +24,8 @@ export class MemeService {
       uploader: { _id: '2', username: 'user2' },
       upvotes: 15,
       downvotes: 3,
-      tags: ['coding', 'programming']
+      tags: ['coding', 'programming'],
+      createdAt: new Date()  // Add this line
     }
   ]);
 

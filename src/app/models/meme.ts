@@ -6,14 +6,22 @@ export interface MemeVote {
 }
 
 export interface Meme {
-  _id?: string;
+  _id: string;
   title: string;
   imageUrl: string;
-  tags?: string[];
-  uploader: string | User;
-  upvotes?: number;
-  downvotes?: number;
-  votedBy?: MemeVote[];
-  createdAt?: string;
-  updatedAt?: string;
+  tags: string[];
+  upvotes: number;
+  downvotes: number;
+  createdAt: Date; // Remove the optional marker
+  comments?: Comment[];
+  firstCommentTimestamp?: Date;
+  uploaderUsername?: string;
+  uploader: string | User; // Add this line to fix the TypeScript errors
+}
+
+interface Comment {
+  _id: string;
+  content: string;
+  createdAt: Date;
+  // altri campi del commento se necessari
 }

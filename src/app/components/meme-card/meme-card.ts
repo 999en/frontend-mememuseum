@@ -17,10 +17,15 @@ export class MemeCard {
   constructor(private memeService: MemeService) {}
 
   getUsername(): string {
-    if (typeof this.meme.uploader === 'string') {
-      return this.meme.uploader; // Return ID if string
+    if (!this.meme.uploader) {
+      return this.meme.uploaderUsername || 'Utente sconosciuto';
     }
-    return this.meme.uploader.username; // Return username if User object
+    
+    if (typeof this.meme.uploader === 'string') {
+      return this.meme.uploaderUsername || 'Utente sconosciuto';
+    }
+    
+    return this.meme.uploader.username || 'Utente sconosciuto';
   }
 
   onUpvote() {
