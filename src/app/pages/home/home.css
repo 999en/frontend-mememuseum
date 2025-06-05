@@ -2,13 +2,24 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2rem;
+  gap: 3rem;  /* Increased gap between posts */
   width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
   padding: 2rem;
+}
+
+.meme-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3rem;
+  width: 100%;
 }
 
 .meme-feed-item {
   width: 100%;
+  max-width: 600px;  /* Control maximum width of posts */
   display: flex;
   justify-content: center;
 }

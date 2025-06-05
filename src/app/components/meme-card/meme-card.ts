@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Meme } from '../../models/meme';
 import { MemeService } from '../../services/meme';
@@ -12,6 +12,7 @@ import { MemeService } from '../../services/meme';
 })
 export class MemeCard {
   @Input() meme!: Meme;
+  @Output() tagClick = new EventEmitter<string>();
   userVote: 'up' | 'down' | null = null;
 
   constructor(private memeService: MemeService) {}
@@ -56,5 +57,9 @@ export class MemeCard {
       this.userVote = 'down';
       this.meme.downvotes = (this.meme.downvotes || 0) + 1;
     }
+  }
+
+  onTagClick(tag: string) {
+    this.tagClick.emit(tag);
   }
 }

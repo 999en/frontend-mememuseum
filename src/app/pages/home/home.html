@@ -1,17 +1,19 @@
 <div class="home-container">
-  <div id="search-bar-container">
+  <form id="search-bar-container" (ngSubmit)="onSearch($event)">
     <input 
       type="text" 
       id="search-bar" 
       placeholder="Cerca meme per tag..."
+      [(ngModel)]="searchQuery"
+      name="search"
     >
-    <button id="search-button">
+    <button type="submit" id="search-button">
       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
         <circle cx="11" cy="11" r="8"></circle>
         <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
       </svg>
     </button>
-  </div>
+  </form>
 
   <div class="meme-feed">
     <div *ngIf="isLoading" class="loading">
@@ -28,7 +30,10 @@
 
     <div *ngIf="!isLoading && memes.length > 0" class="meme-list">
       <div *ngFor="let meme of memes" class="meme-feed-item">
-        <app-meme-card [meme]="meme"></app-meme-card>
+        <app-meme-card 
+          [meme]="meme"
+          (tagClick)="onTagClick($event)">
+        </app-meme-card>
       </div>
     </div>
   </div>
