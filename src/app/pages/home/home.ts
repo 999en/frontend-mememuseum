@@ -18,6 +18,8 @@ export class HomePage implements OnInit {
   isLoading = true;
   error: string | null = null;
   searchQuery: string = '';
+  currentSort: 'recent' | 'votes' | null = null;
+  isRecentFirst = true;
 
   constructor(private memeService: MemeService) {
     this.memeService.memes$.subscribe({
@@ -38,6 +40,22 @@ export class HomePage implements OnInit {
     this.memeService.loadMemes(1);
   }
 
+  sortByRecent() {
+    this.isRecentFirst = !this.isRecentFirst;
+    this.currentSort = 'recent';
+    this.memes.sort((a, b) => {
+      const comparison = new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+      return this.isRecentFirst ? comparison : -comparison;
+    });
+  }
+
+  sortByVotes() {
+    this.currentSort = 'votes';
+    this.memes.sort((a, b) => 
+      (b.upvotes - b.downvotes) - (a.upvotes - a.downvotes)
+    );
+  }
+
   onSearch(event: Event): void {
     event.preventDefault();
     const query = this.searchQuery.trim().toLowerCase();
@@ -51,6 +69,8 @@ export class HomePage implements OnInit {
     this.memes = this.allMemes.filter(meme => 
       meme.tags.some(tag => tag.toLowerCase().includes(query))
     );
+
+    this.currentSort = null;
   }
 
   onTagClick(tag: string) {
