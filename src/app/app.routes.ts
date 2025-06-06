@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { HomePage } from './pages/home/home';
+import { MemeDetail } from './pages/meme-detail/meme-detail';
 
 export const routes: Routes = [
   { path: '', component: HomePage },
@@ -10,5 +11,9 @@ export const routes: Routes = [
   { 
     path: 'register', 
     loadComponent: () => import('./pages/register/register').then(m => m.RegisterPage)
+  },
+  {
+    path: 'meme/:id',
+    component: MemeDetail
   }
 ];

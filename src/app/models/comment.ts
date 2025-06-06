@@ -2,10 +2,13 @@ import { User } from './user';
 import { Meme } from './meme';
 
 export interface Comment {
-  _id?: string;
-  meme: string | Meme;
-  author: string | User;
+  _id: string;
+  meme: string;
+  author: {
+    _id: string;
+    username: string;
+  };
   text: string;
-  createdAt?: string;
-  updatedAt?: string;
+  createdAt: Date | string;
+  updatedAt?: Date | string;
 }

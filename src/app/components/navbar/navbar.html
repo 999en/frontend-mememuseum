@@ -1,12 +1,9 @@
 <nav class="nav-container">
   <div class="nav-content">
-    <div></div>
     <div class="logo-container">
+      <img src="../../../../public/favicon.ico" alt="Logo" class="logo-image">
       <h1>MEMEMUSEUM</h1>
       <p class="subtitle">I Meme del Giorno</p>
-      <p class="welcome" *ngIf="currentUser$ | async as user">
-        Benvenuto, {{ user.username }}!
-      </p>
     </div>
     <div class="auth-buttons">
       <!-- Bottoni per utente non autenticato -->

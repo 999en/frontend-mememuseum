@@ -125,22 +125,17 @@ export class MemeService {
       return meme;
     }
     
-    // Remove duplicate /uploads from path if present
     const cleanImageUrl = meme.imageUrl.replace('/uploads//uploads/', '/uploads/');
     
-    // Process uploader information
-    const uploaderInfo = meme.uploader && typeof meme.uploader === 'object' 
-      ? meme.uploader 
-      : { _id: 'unknown', username: meme.uploaderUsername || 'Utente sconosciuto' };
-
-    // Return processed meme with both image and uploader info
     return {
       ...meme,
       imageUrl: cleanImageUrl.startsWith('http') 
         ? cleanImageUrl 
         : `${environment.backendUrl}${cleanImageUrl}`,
-      uploader: uploaderInfo,
-      uploaderUsername: uploaderInfo.username
+      uploader: meme.uploader || { _id: 'unknown', username: 'Utente sconosciuto' },
+      comments: meme.comments || [],
+      createdAt: new Date(meme.createdAt),
+      firstCommentTimestamp: meme.firstCommentTimestamp ? new Date(meme.firstCommentTimestamp) : undefined
     };
   }
 

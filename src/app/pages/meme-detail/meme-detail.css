@@ -1,0 +1,223 @@
+.detail-container {
+  max-width: 800px;
+  margin: 4rem auto 2rem;  /* Aumentato il margine superiore */
+  padding: 0 2rem;  /* Aumentato padding laterale */
+  position: relative;
+}
+
+.meme-content {
+  background: #1e1e1e;
+  border-radius: 16px;  /* Aumentato border-radius */
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);  /* Ombra più pronunciata */
+}
+
+.header {
+  padding: 2rem;  /* Aumentato padding */
+  border-bottom: 1px solid #333;
+}
+
+.header h1 {
+  color: #fff;
+  margin-bottom: 1rem;  /* Aumentato margin */
+  font-size: 1.75rem;  /* Aumentato font size */
+}
+
+.author {
+  color: #a8a8a8;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.image-container {
+  padding: 1rem 0;  /* Aggiunto padding verticale */
+  background: #000;
+  display: flex;
+  justify-content: center;
+}
+
+.tags {
+  padding: 1.5rem 2rem;  /* Aumentato padding */
+  display: flex;
+  gap: 0.75rem;  /* Aumentato gap */
+  flex-wrap: wrap;
+  border-bottom: 1px solid #333;  /* Aggiunto bordo */
+}
+
+.tag {
+  background: rgba(0, 0, 0, 0.2);
+  color: #fff;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tag:hover {
+  background: rgba(108, 99, 255, 0.2);
+  color: #6c63ff;
+}
+
+.stats {
+  padding: 1.5rem 2rem;
+  display: flex;
+  justify-content: flex-start;
+  border-bottom: 1px solid #333;
+}
+
+.voting-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  width: fit-content;
+}
+
+.vote-button {
+  color: #fff;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0.2rem;
+  display: flex;
+  align-items: center;
+}
+
+.vote-button svg {
+  width: 20px;
+  height: 20px;
+}
+
+.vote-count {
+  font-weight: bold;
+  min-width: 1.5rem;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.vote-button.upvote:hover,
+.vote-button.upvote.active {
+  color: #48bb78;
+}
+
+.vote-button.downvote:hover,
+.vote-button.downvote.active {
+  color: #f56565;
+}
+
+.vote-count.upvotes {
+  color: #48bb78;
+}
+
+.vote-count.downvotes {
+  color: #f56565;
+}
+
+.comments-section {
+  padding: 2rem;  /* Aumentato padding */
+  padding-bottom: 7rem;  /* Spazio per il form dei commenti */
+}
+
+.comments-section h2 {
+  margin-bottom: 2rem;
+  font-size: 1.5rem;
+  color: #fff;
+}
+
+.comments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;  /* Aumentato gap */
+}
+
+.comment {
+  padding: 1.25rem;  /* Aumentato padding */
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+}
+
+.comment-author {
+  color: #6c63ff;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.comment-content {
+  color: #fff;
+}
+
+.comment-date {
+  color: #666;
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
+  display: block;
+}
+
+.back-button {
+  position: fixed;  /* Cambiato da absolute a fixed */
+  top: 1.5rem;
+  left: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  background: rgba(0, 0, 0, 0.8);
+  border: none;
+  color: white;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 1000;  /* Assicura che stia sopra altri elementi */
+}
+
+.back-button:hover {
+  background: rgba(0, 0, 0, 0.6);
+  transform: translateY(-2px);
+}
+
+.back-button svg {
+  width: 20px;
+  height: 20px;
+}
+
+.comment-form {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  gap: 1rem;
+  padding: 1.25rem 2rem;  /* Aumentato padding */
+  background: rgba(30, 30, 30, 0.95);  /* Aggiunto blur effect */
+  backdrop-filter: blur(10px);
+  border-top: 1px solid #333;
+  z-index: 100;
+  max-width: 800px;
+  margin: 0 auto;
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);  /* Aggiunto ombra sottile */
+}
+
+.comment-form input {
+  flex: 1;
+  padding: 0.8rem;
+  border-radius: 8px;
+  border: 1px solid #333;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.comment-form button {
+  padding: 0.8rem 1.5rem;
+  background: #6c63ff;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}

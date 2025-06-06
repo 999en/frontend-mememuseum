@@ -1,4 +1,5 @@
 import { User } from './user';
+import { Comment } from './comment';
 
 export interface MemeVote {
   user: string | User;
@@ -12,16 +13,12 @@ export interface Meme {
   tags: string[];
   upvotes: number;
   downvotes: number;
-  createdAt: Date; // Remove the optional marker
+  createdAt: Date | string;
   comments?: Comment[];
-  firstCommentTimestamp?: Date;
+  firstCommentTimestamp?: Date | string;
   uploaderUsername?: string;
-  uploader: string | User; // Add this line to fix the TypeScript errors
-}
-
-interface Comment {
-  _id: string;
-  content: string;
-  createdAt: Date;
-  // altri campi del commento se necessari
+  uploader: {
+    _id: string;
+    username: string;
+  };
 }

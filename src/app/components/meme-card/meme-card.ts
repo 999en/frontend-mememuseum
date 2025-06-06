@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Meme } from '../../models/meme';
 import { MemeService } from '../../services/meme';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-meme-card',
@@ -15,7 +16,10 @@ export class MemeCard {
   @Output() tagClick = new EventEmitter<string>();
   userVote: 'up' | 'down' | null = null;
 
-  constructor(private memeService: MemeService) {}
+  constructor(
+    private memeService: MemeService,
+    private router: Router
+  ) {}
 
   getUsername(): string {
     if (!this.meme.uploader) {
@@ -61,5 +65,13 @@ export class MemeCard {
 
   onTagClick(tag: string) {
     this.tagClick.emit(tag);
+  }
+
+  onMemeClick(event: Event) {
+    // Previeni la propagazione se il click è sui bottoni di voto o sui tag
+    if ((event.target as HTMLElement).closest('.voting-container, .tag')) {
+      return;
+    }
+    this.router.navigate(['/meme', this.meme._id]);
   }
 }

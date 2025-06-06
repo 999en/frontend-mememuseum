@@ -1,1 +1,72 @@
-<p>meme-detail works!</p>
+<div class="detail-container" *ngIf="!isLoading && meme">
+  <button class="back-button" (click)="onClose()">
+    <svg viewBox="0 0 24 24" width="24" height="24">
+      <path fill="currentColor" d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+    </svg>
+    <span>Indietro</span>
+  </button>
+  <div class="meme-content">
+    <div class="header">
+      <h1>{{ meme.title }}</h1>
+      <p class="author">Postato da {{ meme.uploader.username || 'Utente sconosciuto' }}</p>
+    </div>
+
+    <div class="image-container">
+      <img [src]="meme.imageUrl" [alt]="meme.title">
+    </div>
+
+    <div class="tags">
+      <span class="tag" *ngFor="let tag of meme.tags" (click)="onTagClick(tag)">#{{ tag }}</span>
+    </div>
+
+    <div class="stats">
+      <div class="voting-container">
+        <button class="vote-button upvote" [class.active]="userVote === 'up'" (click)="onUpvote()">
+          <svg viewBox="0 0 24 24" width="24" height="24">
+            <path fill="currentColor" d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z" transform="rotate(-90 12 12)"/>
+          </svg>
+          <span class="vote-count upvotes">{{ meme.upvotes || 0 }}</span>
+        </button>
+        <button class="vote-button downvote" [class.active]="userVote === 'down'" (click)="onDownvote()">
+          <svg viewBox="0 0 24 24" width="24" height="24">
+            <path fill="currentColor" d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z" transform="rotate(90 12 12)"/>
+          </svg>
+          <span class="vote-count downvotes">{{ meme.downvotes || 0 }}</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="comments-section">
+      <h2>Commenti</h2>
+      
+      <div class="comments-list">
+        <div class="comment" *ngFor="let comment of meme.comments">
+          <p class="comment-author">{{ getCommentAuthor(comment) }}</p>
+          <p class="comment-content">{{ comment.text }}</p>
+          <span class="comment-date">{{ comment.createdAt | date }}</span>
+        </div>
+        <div *ngIf="meme.comments?.length === 0" class="no-comments">
+          Nessun commento presente
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <form class="comment-form" (ngSubmit)="onSubmitComment(); commentForm.reset()" #commentForm="ngForm" autocomplete="off">
+    <input 
+      type="text" 
+      [(ngModel)]="newComment"
+      name="comment"
+      placeholder="Aggiungi un commento..."
+    >
+    <button type="submit">Invia</button>
+  </form>
+</div>
+
+<div class="loading" *ngIf="isLoading">
+  Caricamento...
+</div>
+
+<div class="error" *ngIf="error">
+  {{ error }}
+</div>
