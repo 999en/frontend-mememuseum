@@ -4,21 +4,50 @@ nav {
   padding: 1rem;
 }
 
-.auth-buttons button {
-  background-color: #6c63ff;
-  color: white;
+.auth-buttons button,
+.auth-button {
+  background: rgba(108, 99, 255, 0.3);
+  color: #6c63ff;
   border: none;
-  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  height: 40px;
+  padding: 0 1.5rem;
   font-size: 1rem;
-  border-radius: 4px;
+  font-weight: 500;
   cursor: pointer;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: none;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  outline: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 120px;
 }
 
-.auth-buttons button:hover {
-  background-color: #574dcf;
-  transform: scale(1.05);
+.auth-buttons button:hover,
+.auth-button:hover {
+  background: rgba(108, 99, 255, 0.6);
+  color: #fff;
+  box-shadow: 0 0 8px 2px #6c63ff55;
+}
+
+.auth-button.logout {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+}
+
+.auth-button.logout:hover {
+  background: rgba(239, 68, 68, 0.35);
+  color: #fff;
+  box-shadow: 0 0 8px 2px #ef444455;
+}
+
+/* Remove movement effects */
+.auth-button:hover,
+.auth-buttons button:hover,
+.auth-button:active,
+.auth-buttons button:active {
+  transform: none !important;
 }
 
 .nav-container {

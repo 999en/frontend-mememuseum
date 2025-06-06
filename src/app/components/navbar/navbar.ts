@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthModal } from '../auth-modal/auth-modal';
 import { AuthService } from '../../services/auth.service';
+import { UploadModalComponent } from '../upload-modal/upload-modal.component';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, FormsModule, AuthModal],
+  imports: [CommonModule, FormsModule, AuthModal, UploadModalComponent],
   templateUrl: './navbar.html',
   styleUrl: './navbar.css'
 })
@@ -15,6 +16,7 @@ export class NavBar {
   @ViewChild(AuthModal) authModal!: AuthModal;
   currentUser$!: ReturnType<AuthService['getCurrentUser']>;
   isAuthenticated$!: ReturnType<AuthService['isAuthenticated']>;
+  showUploadModal = false;
 
   constructor(private authService: AuthService) {
     this.currentUser$ = this.authService.getCurrentUser();
@@ -36,7 +38,10 @@ export class NavBar {
   }
 
   uploadMeme() {
-    // TODO: Implementare upload meme
-    console.log('Upload meme (non ancora implementato)');
+    this.showUploadModal = true;
+  }
+
+  closeUploadModal() {
+    this.showUploadModal = false;
   }
 }

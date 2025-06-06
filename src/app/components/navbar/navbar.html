@@ -25,3 +25,7 @@
 </nav>
 
 <app-auth-modal></app-auth-modal>
+<app-upload-modal 
+  *ngIf="showUploadModal" 
+  (close)="closeUploadModal()">
+</app-upload-modal>
