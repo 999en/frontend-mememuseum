@@ -41,19 +41,32 @@ export class HomePage implements OnInit {
   }
 
   sortByRecent() {
-    this.isRecentFirst = !this.isRecentFirst;
     this.currentSort = 'recent';
-    this.memes.sort((a, b) => {
-      const comparison = new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-      return this.isRecentFirst ? comparison : -comparison;
-    });
+    this.isRecentFirst = !this.isRecentFirst;
+    this.applyCurrentSort();
   }
 
   sortByVotes() {
     this.currentSort = 'votes';
-    this.memes.sort((a, b) => 
-      (b.upvotes - b.downvotes) - (a.upvotes - a.downvotes)
-    );
+    // Reset del flag isRecentFirst quando passiamo ai voti
+    this.isRecentFirst = true;
+    this.applyCurrentSort();
+  }
+
+  private applyCurrentSort() {
+    if (this.currentSort === 'recent') {
+      this.memes.sort((a, b) => {
+        const comparison = new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+        return this.isRecentFirst ? comparison : -comparison;
+      });
+    } else if (this.currentSort === 'votes') {
+      // Ordina per numero netto di voti (upvotes - downvotes) in ordine decrescente
+      this.memes.sort((a, b) => {
+        const votesA = (a.upvotes || 0) - (a.downvotes || 0);
+        const votesB = (b.upvotes || 0) - (b.downvotes || 0);
+        return votesB - votesA;
+      });
+    }
   }
 
   onSearch(event: Event): void {
