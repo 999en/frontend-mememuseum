@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MemeService } from '../../services/meme.service';
 import { CommentService } from '../../services/comment.service';
+import { AuthService } from '../../services/auth.service';
 import { Meme } from '../../models/meme';
 import { Comment } from '../../models/comment';
 
@@ -20,12 +21,19 @@ export class MemeDetail implements OnInit {
   isLoading = true;
   error?: string;
   userVote: 'up' | 'down' | null = null;
+  isOwner: boolean = false;
+  isEditing = false;
+  editForm = {
+    title: '',
+    tags: ''
+  };
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private memeService: MemeService,
-    private commentService: CommentService
+    private commentService: CommentService,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
@@ -41,11 +49,20 @@ export class MemeDetail implements OnInit {
         this.meme = meme;
         this.isLoading = false;
         this.loadComments(); // Carica i commenti insieme al meme
+        this.checkOwnership();
       },
       error: (err) => {
         this.error = 'Errore nel caricamento del meme';
         this.isLoading = false;
       }
+    });
+  }
+
+  private checkOwnership() {
+    this.authService.getCurrentUser().subscribe(currentUser => {
+      this.isOwner = !!currentUser && 
+                     !!this.meme && 
+                     this.meme.uploader.username === currentUser.username;
     });
   }
 
@@ -127,5 +144,60 @@ export class MemeDetail implements OnInit {
 
   onTagClick(tag: string) {
     this.router.navigate(['/'], { queryParams: { search: tag } });
+  }
+
+  onDeleteMeme() {
+    if (!this.meme || !this.isOwner) return;
+
+    if (confirm('Sei sicuro di voler eliminare questo post? L\'azione è irreversibile.')) {
+      this.memeService.deleteMeme(this.meme._id).subscribe({
+        next: () => {
+          // Ritorna alla home dopo l'eliminazione
+          this.router.navigate(['/']);
+        },
+        error: (error) => {
+          console.error('Error deleting meme:', error);
+          // Gestisci l'errore (magari mostra un messaggio all'utente)
+        }
+      });
+    }
+  }
+
+  startEdit() {
+    this.isEditing = true;
+    if (this.meme) {
+      this.editForm.title = this.meme.title;
+      this.editForm.tags = this.meme.tags.join(', ');
+    }
+  }
+
+  cancelEdit() {
+    this.isEditing = false;
+    this.editForm = {
+      title: '',
+      tags: ''
+    };
+  }
+
+  saveEdit() {
+    if (!this.meme || !this.isOwner) return;
+
+    const tags = this.editForm.tags
+      .split(',')
+      .map(tag => tag.trim())
+      .filter(tag => tag.length > 0);
+
+    this.memeService.updateMeme(this.meme._id, {
+      title: this.editForm.title,
+      tags: tags
+    }).subscribe({
+      next: (updatedMeme) => {
+        this.meme = updatedMeme;
+        this.isEditing = false;
+      },
+      error: (error) => {
+        console.error('Error updating meme:', error);
+      }
+    });
   }
 }

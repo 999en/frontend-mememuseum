@@ -92,18 +92,21 @@ export class MemeService {
       );
   }
 
-  updateMeme(id: string, formData: FormData): Observable<Meme> {
-    return this.http.patch<Meme>(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.MEMES}/${id}`, formData)
-      .pipe(
-        catchError(this.handleError)
-      );
+  updateMeme(memeId: string, data: { title?: string; tags?: string[] }): Observable<Meme> {
+    const formData = new FormData();
+    if (data.title) formData.append('title', data.title);
+    if (data.tags) formData.append('tags', JSON.stringify(data.tags));
+
+    return this.http.patch<Meme>(
+      `${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.MEMES}/${memeId}`,
+      formData
+    ).pipe(catchError(this.handleError));
   }
 
-  deleteMeme(id: string): Observable<void> {
-    return this.http.delete<void>(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.MEMES}/${id}`)
-      .pipe(
-        catchError(this.handleError)
-      );
+  deleteMeme(memeId: string): Observable<any> {
+    return this.http.delete(
+      `${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.MEMES}/${memeId}`
+    ).pipe(catchError(this.handleError));
   }
 
   searchMemes(query: { [key: string]: string }): Observable<Meme[]> {
