@@ -191,8 +191,8 @@ export class MemeDetail implements OnInit {
       title: this.editForm.title,
       tags: tags
     }).subscribe({
-      next: (updatedMeme) => {
-        this.meme = updatedMeme;
+      next: () => {
+        this.loadMeme(this.meme!._id); // Richiama il meme aggiornato
         this.isEditing = false;
       },
       error: (error) => {
@@ -200,4 +200,5 @@ export class MemeDetail implements OnInit {
       }
     });
   }
+
 }

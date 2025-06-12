@@ -95,13 +95,18 @@ export class MemeService {
   updateMeme(memeId: string, data: { title?: string; tags?: string[] }): Observable<Meme> {
     const formData = new FormData();
     if (data.title) formData.append('title', data.title);
-    if (data.tags) formData.append('tags', JSON.stringify(data.tags));
+
+    if (data.tags) {
+      const tagsString = data.tags.join(', ');
+      formData.append('tags', tagsString);
+    }
 
     return this.http.patch<Meme>(
       `${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.MEMES}/${memeId}`,
       formData
     ).pipe(catchError(this.handleError));
   }
+
 
   deleteMeme(memeId: string): Observable<any> {
     return this.http.delete(
