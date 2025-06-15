@@ -14,18 +14,25 @@ import { Meme } from '../../models/meme';
 })
 export class HomePage implements OnInit {
   memes: Meme[] = [];
-  allMemes: Meme[] = []; // Store all memes for filtering
+  allMemes: Meme[] = [];
   isLoading = true;
   error: string | null = null;
   searchQuery: string = '';
   currentSort: 'recent' | 'votes' | null = null;
   isRecentFirst = true;
 
+  // ✅ Paginazione
+  currentPage = 1;
+  pageSize = 10;
+  totalPages = 1;
+
   constructor(private memeService: MemeService) {
     this.memeService.memes$.subscribe({
       next: (memes) => {
-        this.allMemes = memes; // Store all memes
-        this.memes = memes; // Initially show all memes
+        this.allMemes = memes;
+        this.totalPages = Math.ceil(memes.length / this.pageSize);
+        this.currentPage = 1;
+        this.applyFiltersAndSort();
         this.isLoading = false;
       },
       error: (error) => {
@@ -40,54 +47,86 @@ export class HomePage implements OnInit {
     this.memeService.loadMemes(1);
   }
 
+  // ✅ Ordinamento
   sortByRecent() {
     this.currentSort = 'recent';
     this.isRecentFirst = !this.isRecentFirst;
-    this.applyCurrentSort();
+    this.applyFiltersAndSort();
   }
 
   sortByVotes() {
     this.currentSort = 'votes';
-    // Reset del flag isRecentFirst quando passiamo ai voti
     this.isRecentFirst = true;
-    this.applyCurrentSort();
+    this.applyFiltersAndSort();
   }
 
-  private applyCurrentSort() {
+  // ✅ Ricerca
+  onSearch(event: Event): void {
+    event.preventDefault();
+    this.currentPage = 1;
+    this.applyFiltersAndSort();
+  }
+
+  onTagClick(tag: string) {
+    this.searchQuery = tag;
+    this.currentPage = 1;
+    this.applyFiltersAndSort();
+  }
+
+  // ✅ Applica ricerca + ordinamento + paginazione
+  private applyFiltersAndSort() {
+    const query = this.searchQuery.trim().toLowerCase();
+    let filteredMemes = this.allMemes;
+
+    if (query) {
+      filteredMemes = filteredMemes.filter(meme =>
+        meme.tags.some(tag => tag.toLowerCase().includes(query))
+      );
+      this.currentSort = null; // Reset sorting if searching
+    }
+
+    // Ordina
     if (this.currentSort === 'recent') {
-      this.memes.sort((a, b) => {
+      filteredMemes.sort((a, b) => {
         const comparison = new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
         return this.isRecentFirst ? comparison : -comparison;
       });
     } else if (this.currentSort === 'votes') {
-      // Ordina per numero netto di voti (upvotes - downvotes) in ordine decrescente
-      this.memes.sort((a, b) => {
+      filteredMemes.sort((a, b) => {
         const votesA = (a.upvotes || 0) - (a.downvotes || 0);
         const votesB = (b.upvotes || 0) - (b.downvotes || 0);
         return votesB - votesA;
       });
     }
+
+    this.totalPages = Math.max(1, Math.ceil(filteredMemes.length / this.pageSize));
+    this.memes = this.paginateMemes(filteredMemes);
   }
 
-  onSearch(event: Event): void {
-    event.preventDefault();
-    const query = this.searchQuery.trim().toLowerCase();
-    
-    if (!query) {
-      this.memes = this.allMemes; // Reset to all memes if search is empty
-      return;
+  private paginateMemes(memes: Meme[]): Meme[] {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    return memes.slice(startIndex, startIndex + this.pageSize);
+  }
+
+  // ✅ Navigazione pagine
+  goToPage(page: number) {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.applyFiltersAndSort();
     }
-
-    // Filter memes locally based on tags
-    this.memes = this.allMemes.filter(meme => 
-      meme.tags.some(tag => tag.toLowerCase().includes(query))
-    );
-
-    this.currentSort = null;
   }
 
-  onTagClick(tag: string) {
-    this.searchQuery = tag;
-    this.onSearch(new Event('tagclick'));
+  nextPage() {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.applyFiltersAndSort();
+    }
+  }
+
+  prevPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.applyFiltersAndSort();
+    }
   }
 }
