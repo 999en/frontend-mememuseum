@@ -29,6 +29,13 @@
     </div>
   </div>
 
+  <!-- 🔥 Bottone Meme del giorno -->
+  <div class="daily-meme-button-container">
+    <button (click)="showMemeOfTheDay()" class="daily-meme-button">
+      🎁 Meme del giorno!
+    </button>
+  </div>
+
   <div class="meme-feed">
     <div *ngIf="isLoading" class="loading">
       Caricamento meme...
@@ -37,6 +44,14 @@
     <div *ngIf="error" class="error-message">
       {{ error }}
     </div>
+
+  <div *ngIf="memeOfTheDay" class="daily-meme-highlight">
+    <app-meme-card 
+      [meme]="memeOfTheDay"
+      (tagClick)="onTagClick($event)">
+    </app-meme-card>
+  </div>
+
 
     <div *ngIf="!isLoading && !error && memes.length === 0" class="no-memes">
       Nessun meme disponibile
@@ -51,17 +66,14 @@
       </div>
     </div>
 
-    <!-- Paginazione -->
     <div *ngIf="!isLoading && memes.length > 0 && totalPages > 1" class="pagination">
       <button (click)="prevPage()" [disabled]="currentPage === 1">« Prev</button>
-
       <button 
         *ngFor="let page of [].constructor(totalPages); let i = index" 
         (click)="goToPage(i + 1)"
         [class.active]="currentPage === i + 1">
         {{ i + 1 }}
       </button>
-
       <button (click)="nextPage()" [disabled]="currentPage === totalPages">Next »</button>
     </div>
   </div>
