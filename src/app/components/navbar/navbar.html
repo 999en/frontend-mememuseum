@@ -1,10 +1,30 @@
 <nav class="nav-container">
   <div class="nav-content">
-    <div class="logo-container">
-      <img src="../../../../public/favicon.ico" alt="Logo" class="logo-image">
-      <h1>MEMEMUSEUM</h1>
+    <!-- Logo testuale a sinistra -->
+    <div class="logo-text-container">
+      <h1 class="logo-title">MEMEMUSEUM</h1>
       <p class="subtitle">I Meme del Giorno</p>
     </div>
+
+    <!-- Barra di ricerca al centro -->
+    <form id="search-bar-container" (ngSubmit)="onSearch($event)">
+      <input 
+        type="text" 
+        id="search-bar" 
+        placeholder="Cerca meme per tag..."
+        [(ngModel)]="searchQuery"
+        name="search"
+        autocomplete="off"
+      />
+      <button type="submit" id="search-button" aria-label="Cerca">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+      </button>
+    </form>
+
+    <!-- Bottoni e messaggio utente a destra -->
     <div class="auth-buttons">
       <!-- Bottoni per utente non autenticato -->
       <ng-container *ngIf="!(isAuthenticated$ | async)">
@@ -12,8 +32,11 @@
         <button class="auth-button" (click)="showRegister()">Registrati</button>
       </ng-container>
 
-      <!-- Bottoni per utente autenticato -->
+      <!-- Messaggio e bottoni per utente autenticato -->
       <ng-container *ngIf="isAuthenticated$ | async">
+        <span class="welcome" *ngIf="username">
+          Bentornato, <span class="username">{{ username }}</span>!
+        </span>
         <button class="auth-button logout" (click)="logout()">Logout</button>
         <button class="auth-button" (click)="uploadMeme()">Upload Meme</button>
       </ng-container>

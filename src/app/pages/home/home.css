@@ -25,6 +25,7 @@
 }
 
 #search-bar {
+  
   width: 100%;
   padding: 1rem 1.5rem;
   font-size: 1rem;
@@ -43,6 +44,7 @@
 }
 
 #search-button {
+  
   position: absolute;
   right: 1rem;
   top: 50%;
@@ -64,6 +66,7 @@
 }
 
 #search-bar-container {
+  margin-top: 11rem;
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
@@ -73,6 +76,7 @@
 }
 
 .sort-buttons {
+  margin-top: 11rem;
   display: flex;
   gap: 0.75rem;  /* Reduced from 1.5rem */
   position: relative;
@@ -162,6 +166,7 @@
   display: flex;
   justify-content: center;
   margin: 20px 0;
+  transform: translateX(-550px);
 }
 
 .daily-meme-button {
