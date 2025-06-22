@@ -162,14 +162,41 @@
   cursor: not-allowed;
 }
 
+.home-header-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 1.5rem auto 0.5rem auto; /* Ridotto spazio sopra */
+  padding: 0 2rem;
+  gap: 1rem;
+  position: relative;
+}
+
 .daily-meme-button-container {
+  flex: 1;
   display: flex;
   justify-content: center;
-  margin: 20px 0;
-  transform: translateX(-550px);
+  align-items: flex-end;
+  margin: 0;
+  transform: none;
+}
+
+.sort-buttons {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+  align-items: flex-end;
+  margin: 0;
+  padding: 0;
+  position: static;
+  width: auto;
+  max-width: none;
+  z-index: 2;
 }
 
 .daily-meme-button {
+  margin-left: 30%;
   background: linear-gradient(45deg, #f87171, #facc15, #4ade80, #60a5fa);
   background-size: 300% 300%;
   animation: shine 5s ease infinite;
@@ -187,4 +214,8 @@
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
+}
+
+.home-container {
+  padding-top: 6.5rem; /* Spazio sufficiente per la navbar fissa */
 }

@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { MemeCard } from '../../components/meme-card/meme-card';
 import { MemeService } from '../../services/meme.service';
 import { Meme } from '../../models/meme';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -27,7 +27,11 @@ export class HomePage implements OnInit {
   pageSize = 10;
   totalPages = 1;
 
-  constructor(private memeService: MemeService, private router: Router) {
+  constructor(
+    private memeService: MemeService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {
     this.memeService.memes$.subscribe({
       next: (memes) => {
         this.allMemes = memes;
@@ -41,6 +45,17 @@ export class HomePage implements OnInit {
         this.error = error.message;
         this.isLoading = false;
       }
+    });
+
+    // Ascolta i cambiamenti nei parametri di ricerca
+    this.route.queryParams.subscribe(params => {
+      if (typeof params['search'] === 'string') {
+        this.searchQuery = params['search'];
+      } else {
+        this.searchQuery = '';
+      }
+      this.currentPage = 1;
+      this.applyFiltersAndSort();
     });
   }
 

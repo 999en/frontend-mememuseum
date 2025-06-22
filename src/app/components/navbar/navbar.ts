@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { AuthModal } from '../auth-modal/auth-modal';
 import { AuthService } from '../../services/auth.service';
 import { UploadModalComponent } from '../upload-modal/upload-modal.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -25,7 +26,7 @@ export class NavBar implements OnInit {
   // Evento per comunicare la ricerca al componente padre
   @Output() search = new EventEmitter<string>();
 
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService, private router: Router) {
     this.currentUser$ = this.authService.getCurrentUser();
     this.isAuthenticated$ = this.authService.isAuthenticated();
   }
@@ -63,6 +64,12 @@ export class NavBar implements OnInit {
     if (event) {
       event.preventDefault();
     }
-    this.search.emit(this.searchQuery.trim());
+    const query = this.searchQuery.trim();
+    // Naviga alla home con il parametro di ricerca
+    if (query) {
+      this.router.navigate(['/'], { queryParams: { search: query } });
+    } else {
+      this.router.navigate(['/']);
+    }
   }
 }

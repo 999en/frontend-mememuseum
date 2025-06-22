@@ -1,7 +1,7 @@
 .detail-container {
   max-width: 800px;
-  margin: 4rem auto 2rem;  /* Aumentato il margine superiore */
-  padding: 0 2rem;  /* Aumentato padding laterale */
+  margin: 7.5rem auto 2rem;  /* Aumentato il margine superiore per distanziare dalla navbar */
+  padding: 0 2rem;
   position: relative;
 }
 

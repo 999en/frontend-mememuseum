@@ -6,18 +6,18 @@
       <p class="subtitle">I Meme del Giorno</p>
     </div>
 
-    <!-- Barra di ricerca al centro -->
-    <form id="search-bar-container" (ngSubmit)="onSearch($event)">
+    <!-- Barra di ricerca -->
+    <form class="search-container" (ngSubmit)="onSearch($event)">
       <input 
         type="text" 
-        id="search-bar" 
-        placeholder="Cerca meme per tag..."
         [(ngModel)]="searchQuery"
         name="search"
+        placeholder="Cerca meme per tag..."
+        class="search-input"
         autocomplete="off"
-      />
-      <button type="submit" id="search-button" aria-label="Cerca">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      >
+      <button type="submit" class="search-button">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
           <circle cx="11" cy="11" r="8"></circle>
           <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
         </svg>

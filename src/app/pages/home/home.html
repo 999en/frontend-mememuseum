@@ -1,20 +1,12 @@
 <div class="home-container">
-  <div class="search-and-sort">
-    <form id="search-bar-container" (ngSubmit)="onSearch($event)">
-      <input 
-        type="text" 
-        id="search-bar" 
-        placeholder="Cerca meme per tag..."
-        [(ngModel)]="searchQuery"
-        name="search"
-      >
-      <button type="submit" id="search-button">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-          <circle cx="11" cy="11" r="8"></circle>
-          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-        </svg>
+  <div class="home-header-row">
+    <!-- Bottone Meme del giorno -->
+    <div class="daily-meme-button-container">
+      <button (click)="showMemeOfTheDay()" class="daily-meme-button">
+        🎁 Meme del giorno!
       </button>
-    </form>
+    </div>
+
     <div class="sort-buttons">
       <button id="order-toggle-button" 
               [class.active]="currentSort === 'recent'"
@@ -27,13 +19,6 @@
         Più votati
       </button>
     </div>
-  </div>
-
-  <!-- 🔥 Bottone Meme del giorno -->
-  <div class="daily-meme-button-container">
-    <button (click)="showMemeOfTheDay()" class="daily-meme-button">
-      🎁 Meme del giorno!
-    </button>
   </div>
 
   <div class="meme-feed">

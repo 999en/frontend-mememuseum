@@ -1,49 +1,50 @@
 nav {
   background-color: #222;
   color: white;
-  padding: 1rem;
+  padding: 1rem 0;
 }
 
 .nav-container {
-  position: fixed;      /* Fissa la navbar in alto */
-  top: 0;               /* Ancorata al bordo superiore */
+  position: fixed;
+  top: 0;
   left: 0;
-  width: 100%;          /* Larghezza piena */
-  z-index: 1000;        /* Stai sopra agli altri elementi */
-  background-color: #1a1a1a;  /* Sfondo per coprire contenuto sottostante */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5); /* Ombra per staccarla dal contenuto */
+  width: 100%;
+  z-index: 1000;
+  background-color: #1a1a1a;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
 }
 
-
 .nav-content {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr 2.5fr 2fr;
   align-items: center;
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 0 1rem;
-  gap: 2rem;
+  padding: 0 2.5rem;
+  gap: 2.5rem;
+  min-height: 70px; /* leggermente più grande */
 }
 
 .logo-text-container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: flex-start;
   gap: 0.25rem;
 }
 
-
 h1.logo-title {
   color: #fff;
-  font-size: 1.5rem;
+  font-size: 1.35rem; /* leggermente più grande */
   margin: 0;
+  letter-spacing: 1.5px;
 }
 
 .subtitle {
   color: #a8a8a8;
-  font-size: 0.9rem;
+  font-size: 1rem;
   margin: 0;
+  letter-spacing: 0.7px;
 }
 
 /* Searchbar styles */
@@ -54,6 +55,7 @@ h1.logo-title {
 }
 
 #search-bar {
+  
   width: 100%;
   padding: 0.75rem 1.5rem;
   font-size: 1rem;
@@ -95,14 +97,62 @@ h1.logo-title {
   color: #574dcf;
 }
 
+.search-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 650px; /* più larga */
+  margin: 0 auto;
+  position: relative;
+}
+
+.search-input {
+  width: 100%;
+  padding: 1.1rem 3rem 1.1rem 1.5rem; /* più grande */
+  font-size: 1.15rem; /* più grande */
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50px;
+  transition: all 0.3s ease;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #6c63ff;
+  background-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 15px rgba(108, 99, 255, 0.2);
+}
+
+.search-button {
+  position: absolute;
+  right: 1.2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #6c63ff;
+  padding: 0.35rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-button svg {
+  width: 22px;
+  height: 22px;
+}
+
 /* Auth buttons */
 .auth-buttons {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 1rem;
+  gap: 1.1rem;
   margin-left: auto;
-  height: 40px;
+  height: 44px; /* più grande */
 }
 
 .auth-button,
@@ -111,9 +161,9 @@ h1.logo-title {
   color: #6c63ff;
   border: none;
   border-radius: 999px;
-  height: 40px;
-  padding: 0 1.5rem;
-  font-size: 1rem;
+  height: 44px; /* più grande */
+  padding: 0 1.5rem; /* più grande */
+  font-size: 1.08rem; /* più grande */
   font-weight: 500;
   cursor: pointer;
   box-shadow: none;
@@ -122,7 +172,7 @@ h1.logo-title {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 120px;
+  min-width: 110px; /* più grande */
 }
 
 .auth-button:hover,
@@ -153,12 +203,8 @@ h1.logo-title {
 .auth-button {
   background-color: #6c63ff;
   color: white;
-  font-size: 0.9rem;
-  min-width: 120px;
-}
-
-.auth-button:hover {
-  background-color: #574dcf;
+  font-size: 1.08rem;
+  min-width: 110px;
 }
 
 .auth-button.logout {
@@ -171,7 +217,7 @@ h1.logo-title {
 
 .welcome {
   color: #fff;
-  font-size: 0.9rem;
+  font-size: 1.08rem;
   font-weight: normal;
   margin-right: 0.5rem;
   white-space: nowrap;
@@ -180,4 +226,40 @@ h1.logo-title {
 .username {
   color: #6c63ff;
   font-weight: bold;
+}
+
+@media (max-width: 1100px) {
+  .nav-content {
+    grid-template-columns: 1fr 2fr 2fr;
+    gap: 1.5rem;
+    padding: 0 1rem;
+  }
+  .search-container {
+    max-width: 300px;
+  }
+  .auth-buttons {
+    gap: 0.7rem;
+  }
+  h1.logo-title {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 700px) {
+  .nav-content {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+    gap: 1rem;
+    padding: 0 0.5rem;
+  }
+  .logo-text-container,
+  .search-container,
+  .auth-buttons {
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+  }
+  .search-container {
+    max-width: 100%;
+  }
 }
