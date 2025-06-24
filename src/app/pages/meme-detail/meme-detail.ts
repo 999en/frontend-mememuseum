@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { MemeService } from '../../services/meme.service';
 import { CommentService } from '../../services/comment.service';
 import { AuthService } from '../../services/auth.service';
+import { AuthPromptService } from '../../services/auth-prompt.service';
 import { Meme } from '../../models/meme';
 import { Comment } from '../../models/comment';
 
@@ -33,7 +34,8 @@ export class MemeDetail implements OnInit {
     private router: Router,
     private memeService: MemeService,
     private commentService: CommentService,
-    private authService: AuthService
+    private authService: AuthService,
+    private authPrompt: AuthPromptService // aggiunto
   ) {}
 
   ngOnInit() {
@@ -117,29 +119,41 @@ export class MemeDetail implements OnInit {
   }
 
   onUpvote() {
-    if (this.userVote === 'up') {
-      this.userVote = null;
-      if (this.meme) this.meme.upvotes = (this.meme.upvotes || 0) - 1;
-    } else {
-      if (this.userVote === 'down' && this.meme) {
-        this.meme.downvotes = (this.meme.downvotes || 0) - 1;
+    this.authService.getCurrentUser().subscribe(user => {
+      if (!user) {
+        this.authPrompt.requestLogin();
+        return;
       }
-      this.userVote = 'up';
-      if (this.meme) this.meme.upvotes = (this.meme.upvotes || 0) + 1;
-    }
+      if (this.userVote === 'up') {
+        this.userVote = null;
+        if (this.meme) this.meme.upvotes = (this.meme.upvotes || 0) - 1;
+      } else {
+        if (this.userVote === 'down' && this.meme) {
+          this.meme.downvotes = (this.meme.downvotes || 0) - 1;
+        }
+        this.userVote = 'up';
+        if (this.meme) this.meme.upvotes = (this.meme.upvotes || 0) + 1;
+      }
+    });
   }
 
   onDownvote() {
-    if (this.userVote === 'down') {
-      this.userVote = null;
-      if (this.meme) this.meme.downvotes = (this.meme.downvotes || 0) - 1;
-    } else {
-      if (this.userVote === 'up' && this.meme) {
-        this.meme.upvotes = (this.meme.upvotes || 0) - 1;
+    this.authService.getCurrentUser().subscribe(user => {
+      if (!user) {
+        this.authPrompt.requestLogin();
+        return;
       }
-      this.userVote = 'down';
-      if (this.meme) this.meme.downvotes = (this.meme.downvotes || 0) + 1;
-    }
+      if (this.userVote === 'down') {
+        this.userVote = null;
+        if (this.meme) this.meme.downvotes = (this.meme.downvotes || 0) - 1;
+      } else {
+        if (this.userVote === 'up' && this.meme) {
+          this.meme.upvotes = (this.meme.upvotes || 0) - 1;
+        }
+        this.userVote = 'down';
+        if (this.meme) this.meme.downvotes = (this.meme.downvotes || 0) + 1;
+      }
+    });
   }
 
   onTagClick(tag: string) {

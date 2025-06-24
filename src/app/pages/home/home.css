@@ -167,9 +167,9 @@
   align-items: flex-end;
   justify-content: space-between;
   max-width: 1200px;
-  margin: 1.5rem auto 0.5rem auto; /* Ridotto spazio sopra */
+  margin: 2.5rem auto 1.5rem auto;
   padding: 0 2rem;
-  gap: 1rem;
+  gap: 1.5rem;
   position: relative;
 }
 
@@ -196,7 +196,6 @@
 }
 
 .daily-meme-button {
-  margin-left: 30%;
   background: linear-gradient(45deg, #f87171, #facc15, #4ade80, #60a5fa);
   background-size: 300% 300%;
   animation: shine 5s ease infinite;
@@ -217,5 +216,73 @@
 }
 
 .home-container {
-  padding-top: 6.5rem; /* Spazio sufficiente per la navbar fissa */
+  padding-top: 7.5rem;
+}
+
+@media (max-width: 900px) {
+  .home-container {
+    padding-top: 9rem;
+  }
+  .home-header-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+    margin: 2.5rem auto 1rem auto;
+    padding: 0 0.5rem;
+    min-height: unset;
+  }
+  .daily-meme-button-container,
+  .sort-buttons {
+    justify-content: center;
+    width: 100%;
+  }
+  .sort-buttons {
+    gap: 0.5rem;
+  }
+  .daily-meme-button {
+    font-size: 1rem;
+    padding: 10px 16px;
+    border-radius: 10px;
+  }
+  .meme-feed {
+    padding: 1rem;
+    gap: 2rem;
+  }
+  .meme-list {
+    gap: 2rem;
+  }
+  .meme-feed-item {
+    max-width: 98vw;
+  }
+}
+
+@media (max-width: 600px) {
+  .home-container {
+    padding-top: 10.5rem;
+  }
+  .home-header-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.7rem;
+    margin: 1.5rem auto 0.5rem auto;
+    padding: 0 0.2rem;
+  }
+  .daily-meme-button {
+    font-size: 0.95rem;
+    padding: 8px 10px;
+    border-radius: 8px;
+  }
+  .sort-buttons {
+    gap: 0.4rem;
+  }
+  .meme-feed {
+    padding: 0.5rem;
+    gap: 1rem;
+  }
+  .meme-list {
+    gap: 1rem;
+  }
+  .meme-feed-item {
+    max-width: 99vw;
+  }
 }

@@ -29,3 +29,14 @@ button {
 button:hover {
   background-color: #574dcf;
 }
+
+@media (max-width: 600px) {
+  .register-form {
+    max-width: 98vw;
+    padding: 1rem 0.5rem;
+  }
+  input, button {
+    font-size: 1rem;
+    padding: 0.4rem;
+  }
+}

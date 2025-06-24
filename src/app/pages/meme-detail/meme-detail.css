@@ -1,6 +1,6 @@
 .detail-container {
   max-width: 800px;
-  margin: 7.5rem auto 2rem;  /* Aumentato il margine superiore per distanziare dalla navbar */
+  margin: 7.5rem auto 2rem;
   padding: 0 2rem;
   position: relative;
 }
@@ -335,4 +335,79 @@
 
 .title-container h1 {
   margin: 0;
+}
+
+@media (max-width: 900px) {
+  .detail-container {
+    max-width: 98vw;
+    margin: 9rem auto 1rem !important;
+    padding: 0 0.5rem;
+  }
+  .header {
+    padding: 1.2rem;
+  }
+  .header h1 {
+    font-size: 1.2rem;
+  }
+  .subtitle, .author {
+    font-size: 0.9rem;
+  }
+  .close-button, .delete-button {
+    top: 1rem;
+    right: 1rem;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+  }
+  .edit-button {
+    width: 26px;
+    height: 26px;
+    padding: 0.2rem;
+  }
+  .edit-form {
+    padding: 0.7rem 1rem;
+  }
+  .comments-section {
+    padding: 1.2rem;
+    padding-bottom: 5.5rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .detail-container {
+    max-width: 100vw;
+    margin: 10.5rem auto 0.5rem !important;
+    padding: 0 0.1rem;
+  }
+  .header {
+    padding: 0.7rem;
+  }
+  .header h1 {
+    font-size: 1rem;
+  }
+  .subtitle, .author {
+    font-size: 0.8rem;
+  }
+  .close-button, .delete-button {
+    top: 0.5rem;
+    right: 0.5rem;
+    padding: 0.2rem 0.5rem;
+    font-size: 0.8rem;
+  }
+  .edit-button {
+    width: 20px;
+    height: 20px;
+    padding: 0.1rem;
+  }
+  .edit-form {
+    padding: 0.5rem 0.5rem;
+    gap: 0.5rem;
+  }
+  .comments-section {
+    padding: 0.7rem;
+    padding-bottom: 4.5rem;
+  }
+  .comment-form {
+    padding: 0.7rem 0.3rem;
+    max-width: 100vw;
+  }
 }

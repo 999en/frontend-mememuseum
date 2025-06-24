@@ -5,6 +5,7 @@ import { AuthModal } from '../auth-modal/auth-modal';
 import { AuthService } from '../../services/auth.service';
 import { UploadModalComponent } from '../upload-modal/upload-modal.component';
 import { Router } from '@angular/router';
+import { AuthPromptService } from '../../services/auth-prompt.service';
 
 @Component({
   selector: 'app-navbar',
@@ -26,7 +27,11 @@ export class NavBar implements OnInit {
   // Evento per comunicare la ricerca al componente padre
   @Output() search = new EventEmitter<string>();
 
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private authPrompt: AuthPromptService
+  ) {
     this.currentUser$ = this.authService.getCurrentUser();
     this.isAuthenticated$ = this.authService.isAuthenticated();
   }
@@ -34,6 +39,9 @@ export class NavBar implements OnInit {
   ngOnInit() {
     this.currentUser$.subscribe(user => {
       this.username = user?.username ?? null;
+    });
+    this.authPrompt.loginRequest$.subscribe(() => {
+      this.showLogin();
     });
   }
 
