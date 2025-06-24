@@ -8,6 +8,7 @@ import { AuthService } from '../../services/auth.service';
 import { AuthPromptService } from '../../services/auth-prompt.service';
 import { Meme } from '../../models/meme';
 import { Comment } from '../../models/comment';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-meme-detail',
@@ -35,13 +36,15 @@ export class MemeDetail implements OnInit {
     private memeService: MemeService,
     private commentService: CommentService,
     private authService: AuthService,
-    private authPrompt: AuthPromptService // aggiunto
+    private authPrompt: AuthPromptService, // aggiunto
+    private http: HttpClient
   ) {}
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.loadMeme(id);
+      this.loadUserVote(id);
     }
   }
 
@@ -65,6 +68,33 @@ export class MemeDetail implements OnInit {
       this.isOwner = !!currentUser && 
                      !!this.meme && 
                      this.meme.uploader.username === currentUser.username;
+    });
+  }
+
+  private loadUserVote(memeId: string) {
+    this.authService.getCurrentUser().subscribe(user => {
+      if (!user) {
+        this.userVote = null;
+        return;
+      }
+      this.http.get<any[]>('/api/votes/user').subscribe({
+        next: (votes) => {
+          const vote = votes.find(v => {
+            if (!v.meme) return false;
+            if (typeof v.meme === 'string') return v.meme === memeId;
+            return v.meme._id === memeId;
+          });
+          if (vote) {
+            this.userVote = vote.value === 1 || vote.voteType === 'up' ? 'up'
+              : vote.value === -1 || vote.voteType === 'down' ? 'down' : null;
+          } else {
+            this.userVote = null;
+          }
+        },
+        error: () => {
+          this.userVote = null;
+        }
+      });
     });
   }
 
@@ -121,18 +151,32 @@ export class MemeDetail implements OnInit {
   onUpvote() {
     this.authService.getCurrentUser().subscribe(user => {
       if (!user) {
-        this.authPrompt.requestLogin();
+        this.authPrompt?.requestLogin?.();
         return;
       }
+      if (!this.meme) return;
       if (this.userVote === 'up') {
-        this.userVote = null;
-        if (this.meme) this.meme.upvotes = (this.meme.upvotes || 0) - 1;
+        this.http.delete(`/api/votes/${this.meme._id}`).subscribe({
+          next: (result: any) => {
+            this.userVote = null;
+            if (this.meme) {
+              this.meme.upvotes = result.upvotes;
+              this.meme.downvotes = result.downvotes;
+              this.loadUserVote(this.meme._id);
+            }
+          }
+        });
       } else {
-        if (this.userVote === 'down' && this.meme) {
-          this.meme.downvotes = (this.meme.downvotes || 0) - 1;
-        }
-        this.userVote = 'up';
-        if (this.meme) this.meme.upvotes = (this.meme.upvotes || 0) + 1;
+        this.http.post(`/api/votes/${this.meme._id}`, { value: 1 }).subscribe({
+          next: (result: any) => {
+            this.userVote = 'up';
+            if (this.meme) {
+              this.meme.upvotes = result.upvotes;
+              this.meme.downvotes = result.downvotes;
+              this.loadUserVote(this.meme._id);
+            }
+          }
+        });
       }
     });
   }
@@ -140,18 +184,32 @@ export class MemeDetail implements OnInit {
   onDownvote() {
     this.authService.getCurrentUser().subscribe(user => {
       if (!user) {
-        this.authPrompt.requestLogin();
+        this.authPrompt?.requestLogin?.();
         return;
       }
+      if (!this.meme) return;
       if (this.userVote === 'down') {
-        this.userVote = null;
-        if (this.meme) this.meme.downvotes = (this.meme.downvotes || 0) - 1;
+        this.http.delete(`/api/votes/${this.meme._id}`).subscribe({
+          next: (result: any) => {
+            this.userVote = null;
+            if (this.meme) {
+              this.meme.upvotes = result.upvotes;
+              this.meme.downvotes = result.downvotes;
+              this.loadUserVote(this.meme._id);
+            }
+          }
+        });
       } else {
-        if (this.userVote === 'up' && this.meme) {
-          this.meme.upvotes = (this.meme.upvotes || 0) - 1;
-        }
-        this.userVote = 'down';
-        if (this.meme) this.meme.downvotes = (this.meme.downvotes || 0) + 1;
+        this.http.post(`/api/votes/${this.meme._id}`, { value: -1 }).subscribe({
+          next: (result: any) => {
+            this.userVote = 'down';
+            if (this.meme) {
+              this.meme.upvotes = result.upvotes;
+              this.meme.downvotes = result.downvotes;
+              this.loadUserVote(this.meme._id);
+            }
+          }
+        });
       }
     });
   }

@@ -6,6 +6,15 @@
       <p class="subtitle">I Meme del Giorno</p>
     </div>
 
+    <!-- Bottone Home a destra del logo -->
+    <button class="home-button" (click)="goHome()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor">
+        <path d="M3 12L12 4l9 8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M9 21V13h6v8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Home
+    </button>
+
     <!-- Barra di ricerca -->
     <form class="search-container" (ngSubmit)="onSearch($event)">
       <input 

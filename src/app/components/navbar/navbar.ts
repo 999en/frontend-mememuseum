@@ -40,9 +40,7 @@ export class NavBar implements OnInit {
     this.currentUser$.subscribe(user => {
       this.username = user?.username ?? null;
     });
-    this.authPrompt.loginRequest$.subscribe(() => {
-      this.showLogin();
-    });
+
   }
 
   showLogin() {
@@ -79,5 +77,11 @@ export class NavBar implements OnInit {
     } else {
       this.router.navigate(['/']);
     }
+  }
+
+  goHome() {
+    this.router.navigate(['/']).then(() => {
+      window.location.reload();
+    });
   }
 }

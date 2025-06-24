@@ -142,6 +142,7 @@ export class HomePage implements OnInit {
     if (page >= 1 && page <= this.totalPages) {
       this.currentPage = page;
       this.applyFiltersAndSort();
+      window.scrollTo(0, 0); // Scroll istantaneo in alto
     }
   }
 
@@ -149,6 +150,7 @@ export class HomePage implements OnInit {
     if (this.currentPage < this.totalPages) {
       this.currentPage++;
       this.applyFiltersAndSort();
+      window.scrollTo(0, 0); // Scroll istantaneo in alto
     }
   }
 
@@ -156,6 +158,7 @@ export class HomePage implements OnInit {
     if (this.currentPage > 1) {
       this.currentPage--;
       this.applyFiltersAndSort();
+      window.scrollTo(0, 0); // Scroll istantaneo in alto
     }
   }
 }

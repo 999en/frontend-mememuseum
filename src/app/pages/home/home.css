@@ -163,10 +163,10 @@
 }
 
 .home-header-row {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  max-width: 1200px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  max-width: 600px;
   margin: 2.5rem auto 1.5rem auto;
   padding: 0 2rem;
   gap: 1.5rem;
@@ -174,23 +174,21 @@
 }
 
 .daily-meme-button-container {
-  flex: 1;
   display: flex;
   justify-content: center;
-  align-items: flex-end;
-  margin: 0;
-  transform: none;
+  align-items: center;
+  width: 100%;
 }
 
 .sort-buttons {
   display: flex;
   gap: 0.75rem;
   justify-content: flex-end;
-  align-items: flex-end;
+  align-items: center;
+  width: 100%;
   margin: 0;
   padding: 0;
   position: static;
-  width: auto;
   max-width: none;
   z-index: 2;
 }
@@ -201,12 +199,20 @@
   animation: shine 5s ease infinite;
   color: white;
   font-weight: bold;
-  padding: 12px 24px;
-  border-radius: 12px;
+  padding: 8px 18px;
+  border-radius: 10px;
   border: none;
-  font-size: 18px;
+  font-size: 1.05rem;
   cursor: pointer;
   box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  height: 40px;
+  min-height: 40px;
+}
+
+.daily-meme-icon {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 8px;
 }
 
 @keyframes shine {
@@ -224,25 +230,28 @@
     padding-top: 9rem;
   }
   .home-header-row {
-    flex-direction: column;
-    align-items: stretch;
+    grid-template-columns: 1fr;
     gap: 1rem;
+    max-width: 98vw;
     margin: 2.5rem auto 1rem auto;
     padding: 0 0.5rem;
-    min-height: unset;
   }
-  .daily-meme-button-container,
+  .daily-meme-button-container {
+    width: 100%;
+    justify-content: center;
+  }
   .sort-buttons {
     justify-content: center;
     width: 100%;
-  }
-  .sort-buttons {
     gap: 0.5rem;
+    margin-top: 0.5rem;
   }
   .daily-meme-button {
     font-size: 1rem;
-    padding: 10px 16px;
-    border-radius: 10px;
+    padding: 7px 14px;
+    border-radius: 9px;
+    height: 36px;
+    min-height: 36px;
   }
   .meme-feed {
     padding: 1rem;
@@ -261,19 +270,24 @@
     padding-top: 10.5rem;
   }
   .home-header-row {
-    flex-direction: column;
-    align-items: stretch;
+    grid-template-columns: 1fr;
     gap: 0.7rem;
+    max-width: 99vw;
     margin: 1.5rem auto 0.5rem auto;
     padding: 0 0.2rem;
   }
-  .daily-meme-button {
-    font-size: 0.95rem;
-    padding: 8px 10px;
-    border-radius: 8px;
-  }
   .sort-buttons {
+    justify-content: center;
+    width: 100%;
     gap: 0.4rem;
+    margin-top: 0.3rem;
+  }
+  .daily-meme-button {
+    font-size: 0.97rem;
+    padding: 6px 10px;
+    border-radius: 8px;
+    height: 32px;
+    min-height: 32px;
   }
   .meme-feed {
     padding: 0.5rem;

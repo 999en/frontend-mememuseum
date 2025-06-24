@@ -2,8 +2,15 @@
   <div class="home-header-row">
     <!-- Bottone Meme del giorno -->
     <div class="daily-meme-button-container">
-      <button (click)="showMemeOfTheDay()" class="daily-meme-button">
-        🎁 Meme del giorno!
+      <button (click)="showMemeOfTheDay()" class="daily-meme-button" aria-label="Meme del giorno">
+        <svg class="daily-meme-icon" width="22" height="22" viewBox="0 0 24 24" fill="#FACC15" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 8px;">
+          <rect x="2" y="7" width="20" height="13" rx="2" fill="#FACC15"/>
+          <rect x="11" y="7" width="2" height="13" fill="#F59E42"/>
+          <rect x="2" y="7" width="20" height="5" fill="#FDE68A" opacity="0.7"/>
+          <path d="M12 7C13.5 2 20 3.5 16 7" stroke="#F59E42" stroke-width="2" fill="none"/>
+          <path d="M12 7C10.5 2 4 3.5 8 7" stroke="#F59E42" stroke-width="2" fill="none"/>
+        </svg>
+        Meme del giorno!
       </button>
     </div>
 
