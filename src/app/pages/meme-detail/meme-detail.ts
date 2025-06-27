@@ -29,6 +29,8 @@ export class MemeDetail implements OnInit {
     title: '',
     tags: ''
   };
+  showDeleteConfirm = false; // aggiungi stato per il messaggio di conferma
+  showDeleteSuccess = false; // notifica eliminazione
 
   constructor(
     private route: ActivatedRoute,
@@ -220,19 +222,29 @@ export class MemeDetail implements OnInit {
 
   onDeleteMeme() {
     if (!this.meme || !this.isOwner) return;
+    this.showDeleteConfirm = true; // mostra il messaggio di conferma
+  }
 
-    if (confirm('Sei sicuro di voler eliminare questo post? L\'azione è irreversibile.')) {
-      this.memeService.deleteMeme(this.meme._id).subscribe({
-        next: () => {
-          // Ritorna alla home dopo l'eliminazione
+  confirmDeleteMeme() {
+    if (!this.meme || !this.isOwner) return;
+    this.memeService.deleteMeme(this.meme._id).subscribe({
+      next: () => {
+        this.showDeleteSuccess = true;
+        setTimeout(() => {
+          this.showDeleteSuccess = false;
           this.router.navigate(['/']);
-        },
-        error: (error) => {
-          console.error('Error deleting meme:', error);
-          // Gestisci l'errore (magari mostra un messaggio all'utente)
-        }
-      });
-    }
+        }, 1800); // mostra la notifica per 1.8s prima di tornare alla home
+      },
+      error: (error) => {
+        console.error('Error deleting meme:', error);
+        // Gestisci l'errore (magari mostra un messaggio all'utente)
+      }
+    });
+    this.showDeleteConfirm = false;
+  }
+
+  cancelDeleteMeme() {
+    this.showDeleteConfirm = false;
   }
 
   startEdit() {
