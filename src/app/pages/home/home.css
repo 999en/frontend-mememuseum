@@ -227,7 +227,7 @@
 
 @media (max-width: 900px) {
   .home-container {
-    padding-top: 9rem;
+    padding-top: 15rem;
   }
   .home-header-row {
     grid-template-columns: 1fr;
@@ -267,7 +267,7 @@
 
 @media (max-width: 600px) {
   .home-container {
-    padding-top: 10.5rem;
+    padding-top: 15rem;
   }
   .home-header-row {
     grid-template-columns: 1fr;

@@ -31,4 +31,11 @@ test('Ricerca', async ({ page }) => {
   await expect(page).toHaveURL('http://localhost:3000/?search=car');
   await expect(page.locator('app-home')).toContainText('#car');
   await expect(page.getByText('#car', { exact: true }).first()).toBeVisible();
+
+  //Eliminiamo il meme appena caricato
+  
+  await page.locator('div').filter({ hasText: 'AngularMasterFerrarista Lover' }).nth(3).click();
+  await page.getByRole('button', { name: 'Elimina post' }).click();
+  await expect(page.getByText('Sei sicuro di voler eliminare')).toBeVisible();
+  await page.getByRole('button', { name: 'Elimina', exact: true }).click();
 });

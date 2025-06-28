@@ -26,4 +26,11 @@ test('Upload meme', async ({ page }) => {
   await page.getByRole('textbox', { name: 'funny, meme, gaming, cat,' }).fill('ferrari, car, CarMemes');
   await page.locator('app-upload-modal').getByRole('button', { name: 'Upload Meme' }).click();
   await expect(page.locator('div').filter({ hasText: 'AngularMasterFerrarista Lover' }).nth(3)).toBeVisible();
+
+  //Eliminiamo il meme appena caricato
+  
+  await page.locator('div').filter({ hasText: 'AngularMasterFerrarista Lover' }).nth(3).click();
+  await page.getByRole('button', { name: 'Elimina post' }).click();
+  await expect(page.getByText('Sei sicuro di voler eliminare')).toBeVisible();
+  await page.getByRole('button', { name: 'Elimina', exact: true }).click();
 });
