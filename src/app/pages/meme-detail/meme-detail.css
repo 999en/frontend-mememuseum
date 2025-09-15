@@ -190,7 +190,7 @@
 .delete-button {
   position: absolute;
   top: 2rem;
-  right: 8rem;
+  right: 8.2rem;
   background: rgba(239, 68, 68, 0.2);
   border: none;
   color: #ef4444;
@@ -198,7 +198,7 @@
   border-radius: 50%;
   cursor: pointer;
   transition: all 0.2s ease;
-  z-index: 10;
+  z-index: 19;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -210,6 +210,12 @@
   background: rgba(239, 68, 68, 0.3);
   color: #fff;
   box-shadow: 0 0 15px rgba(239, 68, 68, 0.2);
+}
+
+.delete-button svg {
+  width: 20px;
+  height: 20px;
+  transition: width 0.2s, height 0.2s;
 }
 
 .owner-actions {
@@ -331,6 +337,8 @@
   display: flex;
   align-items: center;
   gap: 1rem;
+  position: relative;
+  min-height: 44px;
 }
 
 .title-container h1 {
@@ -397,8 +405,8 @@
 
 .delete-toast {
   position: fixed;
-  right: 2.5rem;
-  bottom: 2.5rem;
+  right: 1.5rem;
+  bottom: 1.5rem;
   background: #181818;
   color: #fff;
   padding: 1rem 1.5rem;
@@ -445,6 +453,10 @@
     padding: 0.4rem 0.8rem;
     font-size: 0.85rem;
   }
+  .delete-button {
+    top: 1rem;
+    right: 5.2rem;
+  }
   .edit-button {
     width: 26px;
     height: 26px;
@@ -456,6 +468,10 @@
   .comments-section {
     padding: 1.2rem;
     padding-bottom: 5.5rem;
+  }
+  .delete-button svg {
+    width: 13px;
+    height: 13px;
   }
 }
 
@@ -480,6 +496,10 @@
     padding: 0.2rem 0.5rem;
     font-size: 0.8rem;
   }
+  .delete-button {
+    top: 0.2rem;
+    right: 4.2rem;
+  }
   .edit-button {
     width: 20px;
     height: 20px;
@@ -491,11 +511,22 @@
   }
   .comments-section {
     padding: 0.7rem;
-    padding-bottom: 4.5rem;
+    padding-bottom: 5.5rem;
   }
   .comment-form {
-    padding: 0.7rem 0.3rem;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0rem; /* Sposta il form più in alto rispetto al bordo */
+    padding: 0.7rem 0.5rem;
     max-width: 100vw;
+    margin: 0 auto;
+    z-index: 100;
+    background: rgba(30, 30, 30, 0.95);
+    border-radius: 20px 20px 0 0;
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
+    display: flex;
+    gap: 0.7rem;
   }
   .delete-toast {
     right: 0.7rem;
@@ -503,5 +534,9 @@
     padding: 0.7rem 1rem;
     font-size: 0.95rem;
     min-width: 120px;
+  }
+  .delete-button svg {
+    width: 10px;
+    height: 10px;
   }
 }
