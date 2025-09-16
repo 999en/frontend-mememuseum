@@ -23,7 +23,7 @@
       <button id="votes-toggle-button" 
               [class.active]="currentSort === 'votes'"
               (click)="sortByVotes()">
-        Più votati
+        {{ isMostVotedFirst ? 'Più votati' : 'Meno votati' }}
       </button>
     </div>
   </div>
@@ -46,7 +46,7 @@
 
 
     <div *ngIf="!isLoading && !error && memes.length === 0" class="no-memes">
-      Nessun meme disponibile
+      Nessun meme con questo tag.
     </div>
 
     <div *ngIf="!isLoading && memes.length > 0" class="meme-list">

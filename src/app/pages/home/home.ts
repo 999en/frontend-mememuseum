@@ -22,6 +22,7 @@ export class HomePage implements OnInit {
   searchQuery: string = '';
   currentSort: 'recent' | 'votes' | null = null;
   isRecentFirst = true;
+  isMostVotedFirst = true;
 
   currentPage = 1;
   pageSize = 10;
@@ -89,7 +90,7 @@ export class HomePage implements OnInit {
 
   sortByVotes() {
     this.currentSort = 'votes';
-    this.isRecentFirst = true;
+    this.isMostVotedFirst = !this.isMostVotedFirst;
     this.applyFiltersAndSort();
   }
 
@@ -109,13 +110,14 @@ export class HomePage implements OnInit {
     const query = this.searchQuery.trim().toLowerCase();
     let filteredMemes = this.allMemes;
 
+    // Apply search filter if query exists
     if (query) {
       filteredMemes = filteredMemes.filter(meme =>
         meme.tags.some(tag => tag.toLowerCase().includes(query))
       );
-      this.currentSort = null;
     }
 
+    // Apply sorting regardless of search state
     if (this.currentSort === 'recent') {
       filteredMemes.sort((a, b) => {
         const comparison = new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
@@ -125,7 +127,7 @@ export class HomePage implements OnInit {
       filteredMemes.sort((a, b) => {
         const votesA = (a.upvotes || 0) - (a.downvotes || 0);
         const votesB = (b.upvotes || 0) - (b.downvotes || 0);
-        return votesB - votesA;
+        return this.isMostVotedFirst ? votesB - votesA : votesA - votesB;
       });
     }
 
