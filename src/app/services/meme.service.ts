@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
-import { BehaviorSubject, Observable, catchError, map, tap, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, catchError, map, tap, throwError, of } from 'rxjs';
 import { API_CONFIG } from '../config/api.config';
 import { Meme } from '../models/meme';
+import { Vote } from '../models/vote';
 import { PaginatedResponse } from '../models/pagination';
 import { environment } from '../../environments/environment';
 
@@ -34,8 +35,7 @@ export class MemeService {
     this.http.get<Meme[]>(
       `${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.MEMES}`,
       { 
-        params,
-        headers: this.getHeaders()
+        params
       }
     ).pipe(
       tap(response => console.log('Raw API response:', response)),
@@ -123,6 +123,38 @@ export class MemeService {
       );
   }
 
+  searchMemesByTag(tag: string, sortBy: 'createdAt' | 'votes' = 'createdAt', order: 'asc' | 'desc' = 'desc'): Observable<Meme[]> {
+    // Se il tag è vuoto, ritorna un observable vuoto
+    if (!tag || tag.trim() === '') {
+      return of([]);
+    }
+
+    const params = new HttpParams()
+      .set('tag', tag.trim())
+      .set('sortBy', sortBy)
+      .set('order', order);
+    
+    return this.http.get<Meme[]>(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.MEMES}/search`, { params })
+      .pipe(
+        map(memes => memes.map(meme => ({
+          ...meme,
+          createdAt: new Date(meme.createdAt),
+          firstCommentTimestamp: meme.firstCommentTimestamp ? new Date(meme.firstCommentTimestamp) : undefined,
+          comments: meme.comments?.map(comment => ({
+            ...comment,
+            createdAt: new Date(comment.createdAt)
+          }))
+        }))),
+        map(memes => this.processImageUrls(memes)),
+        catchError((error) => {
+          // Log dell'errore per debug ma non propagarlo
+          console.warn('API search failed, will use local filtering:', error);
+          // Ritorna array vuoto invece di propagare l'errore
+          return of([]);
+        })
+      );
+  }
+
   private processImageUrls(memes: Meme[]): Meme[] {
     return memes.map(meme => this.processImageUrl(meme));
   }
@@ -154,20 +186,12 @@ export class MemeService {
     );
   }
 
-  private getHeaders(): HttpHeaders {
-    let headers = new HttpHeaders().set('Content-Type', 'application/json');
-    
-    const token = localStorage.getItem('token');
-    if (token) {
-      headers = headers.set('Authorization', `Bearer ${token}`);
-    }
-
+  private getEtagHeader(): HttpHeaders | undefined {
     const etag = localStorage.getItem('memes-etag');
     if (etag) {
-      headers = headers.set('If-None-Match', etag);
+      return new HttpHeaders().set('If-None-Match', etag);
     }
-
-    return headers;
+    return undefined;
   }
 
   private handleError(error: HttpErrorResponse) {
@@ -207,5 +231,61 @@ export class MemeService {
     if (!this.loading && this.hasMore) {
       this.loadMemes(this.currentPage + 1);
     }
+  }
+
+  voteMeme(memeId: string, value: 1 | -1): Observable<{ upvotes: number; downvotes: number }> {
+    const url = `${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.VOTES}/${memeId}`;
+    console.log('🗳️ Voting on meme:', memeId, 'value:', value);
+    console.log('🔗 Vote URL:', url);
+    const token = localStorage.getItem('token');
+    console.log('🎫 Token available:', token ? `${token.substring(0, 20)}...` : 'NO TOKEN');
+    
+    return this.http.post<{ upvotes: number; downvotes: number }>(
+      url,
+      { value }
+    ).pipe(
+      tap(response => console.log('✅ Vote successful:', response)),
+      catchError(error => {
+        console.error('❌ Vote failed:', error);
+        return this.handleError(error);
+      })
+    );
+  }
+
+  removeVote(memeId: string): Observable<{ upvotes: number; downvotes: number }> {
+    const url = `${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.VOTES}/${memeId}`;
+    console.log('🗑️ Removing vote from meme:', memeId);
+    console.log('🔗 Remove vote URL:', url);
+    
+    return this.http.delete<any>(url).pipe(
+      tap(response => console.log('✅ Vote removed:', response)),
+      // After removing vote, fetch the meme to get updated counts
+      map(response => {
+        // If the response already includes upvotes/downvotes, return it
+        if (response.upvotes !== undefined && response.downvotes !== undefined) {
+          return { upvotes: response.upvotes, downvotes: response.downvotes };
+        }
+        // Otherwise return zeros as fallback (will be updated by reloading the meme)
+        return { upvotes: 0, downvotes: 0 };
+      }),
+      catchError(error => {
+        console.error('❌ Remove vote failed:', error);
+        return this.handleError(error);
+      })
+    );
+  }
+
+  getUserVotes(): Observable<Vote[]> {
+    const url = `${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.VOTES}/user`;
+    console.log('👤 Fetching user votes');
+    console.log('🔗 User votes URL:', url);
+    
+    return this.http.get<Vote[]>(url).pipe(
+      tap(response => console.log('✅ User votes fetched:', response)),
+      catchError(error => {
+        console.error('❌ Fetch user votes failed:', error);
+        return this.handleError(error);
+      })
+    );
   }
 }

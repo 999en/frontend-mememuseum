@@ -8,7 +8,6 @@ import { AuthService } from '../../services/auth.service';
 import { AuthPromptService } from '../../services/auth-prompt.service';
 import { Meme } from '../../models/meme';
 import { Comment } from '../../models/comment';
-import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-meme-detail',
@@ -38,8 +37,7 @@ export class MemeDetail implements OnInit {
     private memeService: MemeService,
     private commentService: CommentService,
     private authService: AuthService,
-    private authPrompt: AuthPromptService, // aggiunto
-    private http: HttpClient
+    private authPrompt: AuthPromptService
   ) {}
 
   ngOnInit() {
@@ -79,7 +77,7 @@ export class MemeDetail implements OnInit {
         this.userVote = null;
         return;
       }
-      this.http.get<any[]>('/api/votes/user').subscribe({
+      this.memeService.getUserVotes().subscribe({
         next: (votes) => {
           const vote = votes.find(v => {
             if (!v.meme) return false;
@@ -87,13 +85,20 @@ export class MemeDetail implements OnInit {
             return v.meme._id === memeId;
           });
           if (vote) {
-            this.userVote = vote.value === 1 || vote.voteType === 'up' ? 'up'
-              : vote.value === -1 || vote.voteType === 'down' ? 'down' : null;
+            // Check voteType first (from API), then fall back to value
+            if (vote.voteType) {
+              this.userVote = vote.voteType === 'up' ? 'up' : vote.voteType === 'down' ? 'down' : null;
+            } else if (vote.value !== undefined) {
+              this.userVote = vote.value === 1 ? 'up' : vote.value === -1 ? 'down' : null;
+            } else {
+              this.userVote = null;
+            }
           } else {
             this.userVote = null;
           }
         },
-        error: () => {
+        error: (err) => {
+          console.error('Error loading user votes:', err);
           this.userVote = null;
         }
       });
@@ -158,26 +163,24 @@ export class MemeDetail implements OnInit {
       }
       if (!this.meme) return;
       if (this.userVote === 'up') {
-        this.http.delete(`/api/votes/${this.meme._id}`).subscribe({
-          next: (result: any) => {
+        const memeId = this.meme._id;
+        this.memeService.removeVote(memeId).subscribe({
+          next: () => {
             this.userVote = null;
-            if (this.meme) {
-              this.meme.upvotes = result.upvotes;
-              this.meme.downvotes = result.downvotes;
-              this.loadUserVote(this.meme._id);
-            }
-          }
+            // Reload meme from API to get updated vote counts
+            this.loadMeme(memeId);
+          },
+          error: (err) => console.error('Error removing vote:', err)
         });
       } else {
-        this.http.post(`/api/votes/${this.meme._id}`, { value: 1 }).subscribe({
-          next: (result: any) => {
+        const memeId = this.meme._id;
+        this.memeService.voteMeme(memeId, 1).subscribe({
+          next: () => {
             this.userVote = 'up';
-            if (this.meme) {
-              this.meme.upvotes = result.upvotes;
-              this.meme.downvotes = result.downvotes;
-              this.loadUserVote(this.meme._id);
-            }
-          }
+            // Reload meme from API to get updated vote counts
+            this.loadMeme(memeId);
+          },
+          error: (err) => console.error('Error voting:', err)
         });
       }
     });
@@ -191,26 +194,24 @@ export class MemeDetail implements OnInit {
       }
       if (!this.meme) return;
       if (this.userVote === 'down') {
-        this.http.delete(`/api/votes/${this.meme._id}`).subscribe({
-          next: (result: any) => {
+        const memeId = this.meme._id;
+        this.memeService.removeVote(memeId).subscribe({
+          next: () => {
             this.userVote = null;
-            if (this.meme) {
-              this.meme.upvotes = result.upvotes;
-              this.meme.downvotes = result.downvotes;
-              this.loadUserVote(this.meme._id);
-            }
-          }
+            // Reload meme from API to get updated vote counts
+            this.loadMeme(memeId);
+          },
+          error: (err) => console.error('Error removing vote:', err)
         });
       } else {
-        this.http.post(`/api/votes/${this.meme._id}`, { value: -1 }).subscribe({
-          next: (result: any) => {
+        const memeId = this.meme._id;
+        this.memeService.voteMeme(memeId, -1).subscribe({
+          next: () => {
             this.userVote = 'down';
-            if (this.meme) {
-              this.meme.upvotes = result.upvotes;
-              this.meme.downvotes = result.downvotes;
-              this.loadUserVote(this.meme._id);
-            }
-          }
+            // Reload meme from API to get updated vote counts
+            this.loadMeme(memeId);
+          },
+          error: (err) => console.error('Error voting:', err)
         });
       }
     });

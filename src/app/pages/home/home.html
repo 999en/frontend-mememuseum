@@ -33,10 +33,6 @@
       Caricamento meme...
     </div>
 
-    <div *ngIf="error" class="error-message">
-      {{ error }}
-    </div>
-
   <div *ngIf="memeOfTheDay" class="daily-meme-highlight">
     <app-meme-card 
       [meme]="memeOfTheDay"
@@ -45,8 +41,9 @@
   </div>
 
 
-    <div *ngIf="!isLoading && !error && memes.length === 0" class="no-memes">
-      Nessun meme con questo tag.
+    <div *ngIf="!isLoading && memes.length === 0" class="no-memes">
+      <p *ngIf="searchQuery">Nessun meme trovato per il tag "{{ searchQuery }}".</p>
+      <p *ngIf="!searchQuery">Nessun meme disponibile al momento.</p>
     </div>
 
     <div *ngIf="!isLoading && memes.length > 0" class="meme-list">

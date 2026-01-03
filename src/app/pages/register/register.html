@@ -1,27 +1,51 @@
-<div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+<div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8" style="background:#1a1a1a;">
   <div class="max-w-md w-full space-y-8">
-    <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+    <h2 class="mt-6 text-center text-3xl font-extrabold" style="color:#fff;">
       Crea un nuovo account
     </h2>
     
-    <form class="mt-8 space-y-6" (submit)="onSubmit()">
-      <div class="rounded-md shadow-sm -space-y-px">
-        <input type="text" placeholder="Username" class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm" />
-        <input type="password" placeholder="Password" class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm" />
+    <form class="register-form" (submit)="onSubmit()">
+      <div *ngIf="error" style="color:#ef4444;margin-bottom:1rem;text-align:center;font-size:0.9rem;">
+        {{ error }}
+      </div>
+      
+      <div class="form-group">
+        <input 
+          type="text" 
+          placeholder="Username (min. 3 caratteri)" 
+          [(ngModel)]="username"
+          name="username"
+          [disabled]="isLoading"
+          required
+          minlength="3"
+        />
+      </div>
+      <div class="form-group">
+        <input 
+          type="password" 
+          placeholder="Password (min. 6 caratteri)" 
+          [(ngModel)]="password"
+          name="password"
+          [disabled]="isLoading"
+          required
+          minlength="6"
+        />
       </div>
 
-      <button type="submit" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-        Registrati
+      <button type="submit" style="width:100%;margin-top:1rem;" [disabled]="isLoading">
+        {{ isLoading ? 'Registrazione in corso...' : 'Registrati' }}
       </button>
     </form>
 
-    <div class="mt-4 text-center">
-      <p class="text-gray-600">
+    <div class="mt-4 text-center" style="color:#fff;">
+      <p style="margin-bottom: 0.75rem;">
         Hai già un account?
-        <button (click)="goToLogin()" class="text-blue-500 hover:text-blue-700">
+      </p>
+      <div class="button-container">
+        <button (click)="goToLogin()" class="secondary-button">
           Accedi
         </button>
-      </p>
+      </div>
     </div>
   </div>
 </div>

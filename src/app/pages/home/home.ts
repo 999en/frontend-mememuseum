@@ -33,35 +33,101 @@ export class HomePage implements OnInit {
     private router: Router,
     private route: ActivatedRoute
   ) {
+    // Ascolta i cambiamenti nei parametri di ricerca
+    this.route.queryParams.subscribe(params => {
+      const searchParam = params['search'];
+      
+      if (typeof searchParam === 'string' && searchParam.trim() !== '') {
+        this.searchQuery = searchParam.trim();
+        this.currentPage = 1;
+        // Esegui la ricerca per tag
+        this.performSearch(this.searchQuery);
+      } else {
+        // Campo vuoto o assente: carica tutti i meme
+        this.searchQuery = '';
+        this.currentPage = 1;
+        this.loadAllMemes();
+      }
+    });
+  }
+
+  ngOnInit(): void {
+    // Non caricare qui, viene gestito nel constructor tramite queryParams
+  }
+
+  private loadAllMemes(): void {
+    this.isLoading = true;
+    this.error = null;
+    
     this.memeService.memes$.subscribe({
       next: (memes) => {
         this.allMemes = memes;
         this.totalPages = Math.ceil(memes.length / this.pageSize);
-        this.currentPage = 1;
         this.applyFiltersAndSort();
         this.isLoading = false;
       },
       error: (error) => {
         console.error('Error loading memes:', error);
-        this.error = error.message;
         this.isLoading = false;
       }
     });
+    
+    // Trigger il caricamento se non ci sono meme
+    if (this.allMemes.length === 0) {
+      this.memeService.loadMemes(1);
+    }
+  }
 
-    // Ascolta i cambiamenti nei parametri di ricerca
-    this.route.queryParams.subscribe(params => {
-      if (typeof params['search'] === 'string') {
-        this.searchQuery = params['search'];
-      } else {
-        this.searchQuery = '';
+  private performSearch(query: string): void {
+    this.isLoading = true;
+    this.error = null;
+    
+    const sortBy = this.currentSort === 'votes' ? 'votes' : 'createdAt';
+    const order = this.currentSort === 'votes' 
+      ? (this.isMostVotedFirst ? 'desc' : 'asc')
+      : (this.isRecentFirst ? 'desc' : 'asc');
+    
+    this.memeService.searchMemesByTag(query, sortBy, order).subscribe({
+      next: (memes) => {
+        if (memes.length === 0) {
+          // API non ha trovato risultati o è fallita, usa filtro locale
+          this.useLocalSearch(query);
+        } else {
+          // API ha trovato risultati
+          this.allMemes = memes;
+          this.totalPages = Math.ceil(memes.length / this.pageSize);
+          this.applyFiltersAndSort();
+          this.isLoading = false;
+        }
+      },
+      error: () => {
+        // In caso di errore, usa filtro locale come fallback
+        console.warn('Search API failed, using local filtering');
+        this.useLocalSearch(query);
       }
-      this.currentPage = 1;
-      this.applyFiltersAndSort();
     });
   }
 
-  ngOnInit(): void {
-    this.memeService.loadMemes(1);
+  private useLocalSearch(query: string): void {
+    // Fallback: filtra localmente dai meme già caricati
+    this.memeService.memes$.subscribe({
+      next: (allMemes) => {
+        if (allMemes.length === 0) {
+          // Se non ci sono meme caricati, caricali
+          this.memeService.loadMemes(1);
+          return;
+        }
+        
+        const filtered = allMemes.filter(meme =>
+          meme.tags.some(tag => tag.toLowerCase().includes(query.toLowerCase()))
+        );
+        
+        this.allMemes = filtered;
+        this.totalPages = Math.ceil(filtered.length / this.pageSize);
+        this.applyFiltersAndSort();
+        this.isLoading = false;
+      }
+    });
   }
 
   // ✅ Mostra un meme casuale in base al giorno
@@ -96,28 +162,19 @@ export class HomePage implements OnInit {
 
   onSearch(event: Event): void {
     event.preventDefault();
-    this.currentPage = 1;
-    this.applyFiltersAndSort();
+    // Non fare nulla qui, lascia che il cambio di route gestisca tutto
+    // Questo metodo potrebbe anche essere rimosso se la navbar gestisce già la navigazione
   }
 
   onTagClick(tag: string) {
-    this.searchQuery = tag;
-    this.currentPage = 1;
-    this.applyFiltersAndSort();
+    // Naviga con il parametro search, il constructor gestirà il resto
+    this.router.navigate(['/'], { queryParams: { search: tag } });
   }
 
   private applyFiltersAndSort() {
-    const query = this.searchQuery.trim().toLowerCase();
-    let filteredMemes = this.allMemes;
+    let filteredMemes = [...this.allMemes];
 
-    // Apply search filter if query exists
-    if (query) {
-      filteredMemes = filteredMemes.filter(meme =>
-        meme.tags.some(tag => tag.toLowerCase().includes(query))
-      );
-    }
-
-    // Apply sorting regardless of search state
+    // Apply sorting
     if (this.currentSort === 'recent') {
       filteredMemes.sort((a, b) => {
         const comparison = new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();

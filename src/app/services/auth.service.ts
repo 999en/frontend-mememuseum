@@ -17,8 +17,19 @@ export class AuthService {
   }
 
   login(credentials: AuthRequest): Observable<AuthResponse> {
+    console.log('🔐 Attempting login with username:', credentials.username);
     return this.http.post<AuthResponse>(`${this.API_URL}/login`, credentials)
-      .pipe(tap(response => this.handleAuthSuccess(response)));
+      .pipe(
+        tap(response => {
+          console.log('✅ Login response received:', response);
+          console.log('🎫 Token received:', response.token ? `${response.token.substring(0, 20)}...` : 'NO TOKEN');
+          this.handleAuthSuccess(response);
+        }),
+        catchError(error => {
+          console.error('❌ Login failed:', error);
+          return this.handleError(error);
+        })
+      );
   }
 
   register(credentials: AuthRequest): Observable<AuthResponse> {
@@ -34,10 +45,20 @@ export class AuthService {
   }
 
   private handleAuthSuccess(response: AuthResponse): void {
+    console.log('💾 Saving auth data to localStorage');
+    console.log('🎫 Token to save:', response.token ? `${response.token.substring(0, 20)}...` : 'NO TOKEN');
+    console.log('👤 User to save:', response.user);
+    
     localStorage.setItem('token', response.token);
     localStorage.setItem('user', JSON.stringify(response.user));
+    
+    // Verifica che sia stato salvato
+    const savedToken = localStorage.getItem('token');
+    console.log('✅ Token saved and verified:', savedToken ? `${savedToken.substring(0, 20)}...` : 'SAVE FAILED');
+    
     this.isAuthenticatedSubject.next(true);
     this.currentUser.next(response.user);
+    console.log('✅ Authentication state updated');
   }
 
   private checkInitialAuth(): void {

@@ -5,7 +5,8 @@ export interface Vote {
   _id?: string;
   meme: string | Meme;
   user: string | User;
-  value: 1 | -1;
+  value?: 1 | -1;
+  voteType?: 'up' | 'down';
   createdAt?: string;
   updatedAt?: string;
 }
