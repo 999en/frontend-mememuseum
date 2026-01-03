@@ -1,0 +1,38 @@
+<!-- ============================================
+     CONFIRM DIALOG TEMPLATE
+     Modal overlay with confirm/cancel actions
+     ============================================ -->
+
+<div class="confirm-overlay" (click)="onCancel()">
+  <div class="confirm-dialog" (click)="$event.stopPropagation()" [class.danger]="danger">
+    <!-- Icon -->
+    <div class="confirm-icon">
+      <svg *ngIf="danger" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"/>
+        <line x1="12" y1="8" x2="12" y2="12"/>
+        <line x1="12" y1="16" x2="12.01" y2="16"/>
+      </svg>
+      <svg *ngIf="!danger" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"/>
+        <line x1="12" y1="8" x2="12" y2="12"/>
+        <line x1="12" y1="16" x2="12.01" y2="16"/>
+      </svg>
+    </div>
+
+    <!-- Title -->
+    <h2 class="confirm-title">{{ title }}</h2>
+
+    <!-- Message -->
+    <p class="confirm-message">{{ message }}</p>
+
+    <!-- Action Buttons -->
+    <div class="confirm-actions">
+      <button class="btn btn-cancel" (click)="onCancel()">
+        {{ cancelText }}
+      </button>
+      <button class="btn btn-confirm" [class.danger]="danger" (click)="onConfirm()">
+        {{ confirmText }}
+      </button>
+    </div>
+  </div>
+</div>

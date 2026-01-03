@@ -1,0 +1,472 @@
+/* ============================================
+   UPLOAD PAGE STYLES
+   Dedicated page for meme uploads with elegant design
+   ============================================ */
+
+/* ============================================
+   CONTAINER & CARD
+   ============================================ */
+.upload-container {
+  min-height: 100vh;
+  padding: calc(48px + 3rem) 2rem 2rem;
+  background-color: var(--color-bg-primary, #1a1a1a);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.upload-card {
+  width: 100%;
+  max-width: 700px;
+  padding: 0;
+  position: relative;
+}
+
+/* ============================================
+   HEADER SECTION
+   ============================================ */
+.upload-header {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.page-title {
+  color: #fff;
+  font-size: 1.6rem;
+  font-weight: 600;
+  margin: 0 0 0.3rem 0;
+}
+
+.page-subtitle {
+  color: #a8a8a8;
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+/* ============================================
+   FORM SECTIONS
+   ============================================ */
+.upload-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-section {
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+.section-title {
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 500;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
+.required {
+  color: #ef4444;
+}
+
+/* ============================================
+   IMAGE UPLOAD AREA
+   ============================================ */
+.image-upload-area {
+  position: relative;
+}
+
+.file-input {
+  display: none;
+}
+
+.upload-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  min-height: 180px;
+  border: 2px dashed #6c63ff;
+  border-radius: 8px;
+  background: rgba(108, 99, 255, 0.05);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.upload-label:hover {
+  background-color: rgba(108, 99, 255, 0.1);
+}
+
+.upload-label svg {
+  color: #6c63ff;
+}
+
+.upload-text-primary {
+  color: #6c63ff;
+  font-size: 1rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+.upload-text-secondary {
+  color: #6c63ff;
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+/* ============================================
+   IMAGE PREVIEW
+   ============================================ */
+.image-preview-container {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #1a1a1a;
+  border: 1px solid #333;
+}
+
+.image-preview {
+  width: 100%;
+  height: auto;
+  max-height: 250px;
+  object-fit: contain;
+  display: block;
+}
+
+.remove-image-button {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: #ef4444;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.remove-image-button:hover {
+  background: #dc2626;
+}
+
+.selected-file-name {
+  color: #a8a8a8;
+  font-size: 0.9rem;
+  margin: 0.5rem 0 0 0;
+}
+
+/* ============================================
+   TEXT INPUTS
+   ============================================ */
+.text-input {
+  width: 100%;
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  color: #fff;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+}
+
+.text-input::placeholder {
+  color: #666666;
+  opacity: 1;
+}
+
+.text-input:focus {
+  outline: none;
+  border-color: #6c63ff;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.text-input.error {
+  border-color: #ef4444;
+}
+
+.input-hint {
+  color: #666666;
+  font-size: 0.85rem;
+  margin: 0.5rem 0 0 0;
+}
+
+/* ============================================
+   MESSAGES
+   ============================================ */
+.error-message,
+.success-message {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  margin-top: 1rem;
+}
+
+.error-message {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  border: 1px solid #ef4444;
+}
+
+.success-message {
+  background: rgba(72, 187, 120, 0.1);
+  color: #48bb78;
+  border: 1px solid #48bb78;
+}
+
+/* ============================================
+   DIVIDER
+   ============================================ */
+.divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  margin: 1rem 0;
+  width: 100%;
+}
+
+/* ============================================
+   ACTION BUTTONS
+   ============================================ */
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  margin-top: 0.5rem;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 2rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  min-width: 150px;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background-color: #6c63ff;
+  color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: #574dcf;
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Spinner animation */
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ============================================
+   RESPONSIVE DESIGN - TABLET
+   ============================================ */
+@media (max-width: 900px) {
+  .upload-container {
+    padding: calc(48px + 1.5rem) 1.5rem 1.5rem;
+  }
+
+  .upload-card {
+    max-width: 100%;
+  }
+
+  .page-title {
+    font-size: 1.6rem;
+  }
+
+  .section-title {
+    font-size: 1rem;
+  }
+
+  .text-input {
+    padding: 0.8rem;
+    font-size: 0.95rem;
+  }
+
+  .btn {
+    padding: 0.6rem 1.5rem;
+    font-size: 0.95rem;
+  }
+
+  .upload-label {
+    min-height: 200px;
+    padding: 1.5rem;
+  }
+}
+
+/* ============================================
+   RESPONSIVE DESIGN - MOBILE
+   ============================================ */
+@media (max-width: 600px) {
+  .upload-container {
+    min-height: 100vh;
+    padding: 70px 0.75rem 0.3rem;
+    align-items: flex-start;
+    overflow-y: auto;
+  }
+
+  .upload-card {
+    padding: 9rem 1.5rem 1.5rem;
+    max-width: 100%;
+    width: 100%;
+    margin-bottom: 0%;
+  }
+
+  .upload-header {
+    margin-bottom: 0.35rem;
+    padding-top: 0.25rem;
+  }
+
+  .page-title {
+    font-size: 1.1rem;
+    margin-bottom: 0.1rem;
+    font-weight: 600;
+  }
+
+  .page-subtitle {
+    font-size: 0.7rem;
+    line-height: 1.2;
+  }
+
+  .section-title {
+    font-size: 0.85rem;
+    margin-top: 0;
+    margin-bottom: 0.35rem;
+    font-weight: 600;
+  }
+
+  .form-section {
+    margin-bottom: 0.4rem;
+  }
+
+  .text-input {
+    padding: 0.55rem 0.65rem;
+    font-size: 0.9rem;
+    border-radius: 6px;
+  }
+
+  .input-hint {
+    font-size: 0.7rem;
+    margin-top: 0.2rem;
+  }
+
+  .btn {
+    padding: 0.6rem 0.85rem;
+    font-size: 0.875rem;
+    min-width: 100px;
+    border-radius: 6px;
+  }
+
+  .upload-label {
+    min-height: 95px;
+    padding: 0.6rem;
+    gap: 0.35rem;
+    border-radius: 6px;
+  }
+
+  .upload-label svg {
+    width: 26px;
+    height: 26px;
+  }
+
+  .upload-text-primary {
+    font-size: 0.8rem;
+    line-height: 1.2;
+  }
+
+  .upload-text-secondary {
+    font-size: 0.68rem;
+    line-height: 1.2;
+  }
+
+  .image-preview {
+    max-height: 140px;
+  }
+
+  .image-preview-container {
+    border-radius: 6px;
+  }
+
+  .remove-image-button {
+    font-size: 0.72rem;
+    padding: 0.3rem 0.55rem;
+    border-radius: 5px;
+    top: 0.35rem;
+    right: 0.35rem;
+  }
+
+  .selected-file-name {
+    font-size: 0.72rem;
+    margin-top: 0.25rem;
+  }
+
+  .error-message,
+  .success-message {
+    padding: 0.55rem;
+    font-size: 0.78rem;
+    margin-top: 0.4rem;
+    border-radius: 6px;
+  }
+
+  .error-message svg,
+  .success-message svg {
+    width: 15px;
+    height: 15px;
+    flex-shrink: 0;
+  }
+
+  .form-actions {
+    flex-direction: row;
+    gap: 0.5rem;
+    margin-top: 0.3rem;
+  }
+
+  .btn {
+    width: 100%;
+    flex: 1;
+  }
+
+  .divider {
+    margin: 0.35rem 0;
+  }
+}

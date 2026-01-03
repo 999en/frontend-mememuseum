@@ -22,12 +22,12 @@ import { filter } from 'rxjs/operators';
 
 import { AuthService } from '../../services/auth.service';
 import { AuthPromptService } from '../../services/auth-prompt.service';
-import { UploadModalComponent } from '../upload-modal/upload-modal.component';
+import { ConfirmDialog } from '../confirm-dialog/confirm-dialog';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, FormsModule, UploadModalComponent],
+  imports: [CommonModule, FormsModule, ConfirmDialog],
   templateUrl: './navbar.html',
   styleUrl: './navbar.css'
 })
@@ -42,9 +42,6 @@ export class NavBar implements OnInit {
   /** Observable stream of authentication status */
   isAuthenticated$!: ReturnType<AuthService['isAuthenticated']>;
   
-  /** Flag to control upload modal visibility */
-  showUploadModal = false;
-  
   /** Currently logged in username (null if not authenticated) */
   username: string | null = null;
   
@@ -53,6 +50,9 @@ export class NavBar implements OnInit {
   
   /** Event emitted when search is performed (legacy, kept for compatibility) */
   @Output() search = new EventEmitter<string>();
+  
+  /** Show confirm dialog for logout */
+  showLogoutConfirm: boolean = false;
 
   // ============================================
   // Constructor & Initialization
@@ -151,28 +151,35 @@ export class NavBar implements OnInit {
   // ============================================
   
   /**
-   * Log out current user and redirect to home
+   * Show confirmation dialog before logout
    */
   logout(): void {
+    this.showLogoutConfirm = true;
+  }
+  
+  /**
+   * Confirm logout action
+   */
+  confirmLogout(): void {
     this.authService.logout();
+    this.showLogoutConfirm = false;
+  }
+  
+  /**
+   * Cancel logout action
+   */
+  cancelLogout(): void {
+    this.showLogoutConfirm = false;
   }
 
   // ============================================
-  // Modal Methods
+  // Navigation Methods
   // ============================================
   
   /**
-   * Open meme upload modal
+   * Navigate to upload page
    */
   uploadMeme(): void {
-    this.showUploadModal = true;
-  }
-
-  /**
-   * Close meme upload modal
-   */
-  closeUploadModal(): void {
-    this.showUploadModal = false;
+    this.router.navigate(['/upload']);
   }
 }
-

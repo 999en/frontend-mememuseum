@@ -53,7 +53,14 @@
   </div>
 </nav>
 
-<app-upload-modal 
-  *ngIf="showUploadModal" 
-  (close)="closeUploadModal()">
-</app-upload-modal>
+<!-- Confirm Dialog for Logout -->
+<app-confirm-dialog
+  *ngIf="showLogoutConfirm"
+  title="Conferma Logout"
+  message="Sei sicuro di voler uscire dal tuo account?"
+  confirmText="Esci"
+  cancelText="Annulla"
+  [danger]="true"
+  (confirm)="confirmLogout()"
+  (cancel)="cancelLogout()"
+></app-confirm-dialog>

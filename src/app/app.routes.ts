@@ -12,6 +12,10 @@ export const routes: Routes = [
     path: 'register', 
     loadComponent: () => import('./pages/register/register').then(m => m.RegisterPage)
   },
+  { 
+    path: 'upload', 
+    loadComponent: () => import('./pages/upload/upload').then(m => m.UploadPage)
+  },
   {
     path: 'meme/:id',
     component: MemeDetail

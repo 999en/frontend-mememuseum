@@ -6,13 +6,14 @@ import { MemeService } from '../../services/meme.service';
 import { CommentService } from '../../services/comment.service';
 import { AuthService } from '../../services/auth.service';
 import { AuthPromptService } from '../../services/auth-prompt.service';
+import { ConfirmDialog } from '../../components/confirm-dialog/confirm-dialog';
 import { Meme } from '../../models/meme';
 import { Comment } from '../../models/comment';
 
 @Component({
   selector: 'app-meme-detail',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ConfirmDialog],
   templateUrl: './meme-detail.html',
   styleUrl: './meme-detail.css'
 })

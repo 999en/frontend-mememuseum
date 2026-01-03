@@ -1,14 +1,15 @@
 <div class="detail-container" *ngIf="!isLoading && meme">
-  <!-- Messaggio di conferma eliminazione -->
-  <div *ngIf="showDeleteConfirm" class="delete-confirm-overlay">
-    <div class="delete-confirm-box">
-      <p>Sei sicuro di voler eliminare questo post? L'azione è irreversibile.</p>
-      <div class="delete-confirm-actions">
-        <button class="confirm" (click)="confirmDeleteMeme()">Elimina</button>
-        <button class="cancel" (click)="cancelDeleteMeme()">Annulla</button>
-      </div>
-    </div>
-  </div>
+  <!-- Componente di conferma eliminazione -->
+  <app-confirm-dialog
+    *ngIf="showDeleteConfirm"
+    title="Elimina Meme"
+    message="Sei sicuro di voler eliminare questo meme? L'azione è irreversibile e tutti i commenti e i voti associati saranno persi."
+    confirmText="Elimina"
+    cancelText="Annulla"
+    [danger]="true"
+    (confirm)="confirmDeleteMeme()"
+    (cancel)="cancelDeleteMeme()"
+  ></app-confirm-dialog>
 
   <div class="meme-content">
     <!-- Nascondi i bottoni durante la modifica -->
