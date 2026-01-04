@@ -12,31 +12,34 @@ test('Comment test', async ({ page }) => {
   await page.getByRole('textbox', { name: 'Username' }).fill('AngularMaster');
   await page.getByRole('textbox', { name: 'Password' }).click();
   await page.getByRole('textbox', { name: 'Password' }).fill('password');
-  await page.locator('app-auth-modal').getByRole('button', { name: 'Accedi' }).click();
+  await page.getByRole('textbox', { name: 'Password' }).press('Enter');
 
-  // Carico prima il meme presente nella cartella del test
+  //Carico prima il meme presente nella cartella del test
   await page.getByRole('button', { name: 'Upload Meme' }).click();
-  await page.getByRole('textbox', { name: 'Aggiungi un titolo al tuo' }).click();
-  await page.getByRole('textbox', { name: 'Aggiungi un titolo al tuo' }).fill('titolo prova');
-  const filePath = path.resolve(__dirname, 'memetest.jpeg');
-  await page.locator('input[type="file"]').setInputFiles(filePath)
+  await page.getByText('Clicca per caricare o trascina quiPNG, JPG, GIF o WebP (MAX. 10MB)').click();
+  await page.locator('input[type="file"]').setInputFiles('e2e/memetest.jpeg');
+  await page.getByRole('textbox', { name: 'Dai un titolo al tuo meme...' }).click();
+  await page.getByRole('textbox', { name: 'Dai un titolo al tuo meme...' }).fill('Titolo test commento');
   await page.getByRole('textbox', { name: 'funny, meme, gaming, cat,' }).click();
-  await page.getByRole('textbox', { name: 'funny, meme, gaming, cat,' }).fill('tag1, tag2');
-  await page.locator('app-upload-modal').getByRole('button', { name: 'Upload Meme' }).click();
+  await page.getByRole('textbox', { name: 'funny, meme, gaming, cat,' }).fill('TagTest1, TagTest2');
+  await page.getByRole('button', { name: 'Carica Meme' }).click();
+  await expect(page.locator('div').filter({ hasText: 'AngularMasterTitolo test commento #' }).nth(3)).toBeVisible();
 
-  //Visualizzo e apro il post con il meme appena caricato
-  await page.locator('div').filter({ hasText: 'AngularMastertitolo prova #' }).nth(3).click();
 
+  
+  
   //Commento e verifica che il commento sia visibile
-  await expect(page.locator('form').filter({ hasText: 'Invia' })).toBeVisible();
+  await page.getByRole('img', { name: 'Titolo test commento' }).click();
+  await expect(page.getByText('Postato da AngularMaster')).toBeVisible();
   await page.getByRole('textbox', { name: 'Aggiungi un commento...' }).click();
-  await page.getByRole('textbox', { name: 'Aggiungi un commento...' }).fill('Prova commento');
+  await page.getByRole('textbox', { name: 'Aggiungi un commento...' }).fill('commento questo post e premo invia');
   await page.getByRole('button', { name: 'Invia' }).click();
-  await expect(page.getByText('CommentiAngularMasterProva')).toBeVisible();
-  await expect(page.getByText('Prova commento')).toBeVisible();
-  await expect(page.locator('app-meme-detail')).toContainText('Prova commento');
-
-  //Elimino il meme appena caricato
-  await page.getByRole('button', { name: 'Elimina post' }).click();
-  await page.getByRole('button', { name: 'Elimina', exact: true }).click();
+  await expect(page.getByText('AngularMastercommento questo')).toBeVisible();
+  
+    //Eliminiamo il meme appena caricato
+    await expect(page.getByRole('button', { name: 'Elimina post' })).toBeVisible();
+    await page.getByRole('button', { name: 'Elimina post' }).click();
+    await expect(page.getByText('Elimina MemeSei sicuro di')).toBeVisible();
+    await page.getByRole('button', { name: 'Elimina', exact: true }).click();
+  
 });

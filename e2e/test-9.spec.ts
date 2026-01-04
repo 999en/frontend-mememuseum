@@ -11,14 +11,13 @@ test('Logout test', async ({ page }) => {
   await page.getByRole('button', { name: 'Accedi' }).click();
   await page.getByRole('textbox', { name: 'Username' }).click();
   await page.getByRole('textbox', { name: 'Username' }).fill('AngularMaster');
-  await page.getByRole('textbox', { name: 'Password' }).click();
+  await page.getByRole('textbox', { name: 'Username' }).press('Tab');
   await page.getByRole('textbox', { name: 'Password' }).fill('password');
-  await page.locator('app-auth-modal').getByRole('button', { name: 'Accedi' }).click();
+  await page.locator('app-login').getByRole('button', { name: 'Accedi' }).click();
   await expect(page.getByText('Bentornato, AngularMaster!')).toBeVisible();
-  await expect(page.getByRole('button', { name: 'Logout' })).toBeVisible();
   await page.getByRole('button', { name: 'Logout' }).click();
+  await expect(page.getByText('Conferma LogoutSei sicuro di')).toBeVisible();
+  await page.getByRole('button', { name: 'Esci' }).click();
   await expect(page.getByText('MEMEMUSEUMI Meme del Giorno Home AccediRegistrati')).toBeVisible();
-  await expect(page.locator('app-home')).toContainText('2');
-  await page.getByRole('button', { name: '2' }).first().click();
-  await expect(page.getByRole('button', { name: '2' }).first()).toBeVisible();
+
 });

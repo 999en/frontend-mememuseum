@@ -10,12 +10,11 @@ test('Registrazione', async ({ page }) => {
 
   await page.goto('http://localhost:3000/');
   await page.getByRole('button', { name: 'Registrati' }).click();
-  await page.getByRole('textbox', { name: 'Username' }).click();
-  await page.getByRole('textbox', { name: 'Username' }).fill(username);
-  await page.getByRole('textbox', { name: 'Password' }).click();
-  await page.getByRole('textbox', { name: 'Password' }).fill(password);
-  await page.locator('app-auth-modal').getByRole('button', { name: 'Registrati' }).click();
-  await page.getByRole('button', { name: 'Home' }).click();
+  await page.getByRole('textbox', { name: 'Username (min. 3 caratteri)' }).click();
+  await page.getByRole('textbox', { name: 'Username (min. 3 caratteri)' }).fill(username);
+  await page.getByRole('textbox', { name: 'Password (min. 6 caratteri)' }).click();
+  await page.getByRole('textbox', { name: 'Password (min. 6 caratteri)' }).fill(password);
+  await page.locator('app-register').getByRole('button', { name: 'Registrati' }).click();
 
   // Controlla che venga mostrato un messaggio di benvenuto con l'username corretto
   await expect(page.getByText(new RegExp(`Bentornato,?\\s*${username}[!\\.]?`, 'i'))).toBeVisible();

@@ -9,7 +9,8 @@ test('Login fallito', async ({ page }) => {
   await page.getByRole('textbox', { name: 'Username' }).click();
   await page.getByRole('textbox', { name: 'Username' }).fill('AngularMaster');
   await page.getByRole('textbox', { name: 'Password' }).click();
-  await page.getByRole('textbox', { name: 'Password' }).fill('nonricordo');
-  await page.locator('app-auth-modal').getByRole('button', { name: 'Accedi' }).click();
-  await expect(page.getByText('Password non valida o utente')).toBeVisible();
+  await page.getByRole('textbox', { name: 'Password' }).fill('nonricordolapassword');
+  await page.locator('app-login').getByRole('button', { name: 'Accedi' }).click();
+  await expect(page.getByText('Password non valida')).toBeVisible();
+
 });

@@ -111,7 +111,15 @@ export class MemeService {
   deleteMeme(memeId: string): Observable<any> {
     return this.http.delete(
       `${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.MEMES}/${memeId}`
-    ).pipe(catchError(this.handleError));
+    ).pipe(
+      tap(() => {
+        // Rimuovi il meme dal BehaviorSubject per aggiornare istantaneamente la UI
+        const currentMemes = this.memesSubject.value;
+        const updatedMemes = currentMemes.filter(meme => meme._id !== memeId);
+        this.memesSubject.next(updatedMemes);
+      }),
+      catchError(this.handleError)
+    );
   }
 
   searchMemes(query: { [key: string]: string }): Observable<Meme[]> {

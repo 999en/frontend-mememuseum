@@ -231,11 +231,8 @@ export class MemeDetail implements OnInit {
     if (!this.meme || !this.isOwner) return;
     this.memeService.deleteMeme(this.meme._id).subscribe({
       next: () => {
-        this.showDeleteSuccess = true;
-        setTimeout(() => {
-          this.showDeleteSuccess = false;
-          this.router.navigate(['/']);
-        }, 1800); // mostra la notifica per 1.8s prima di tornare alla home
+        // Naviga immediatamente alla home dopo l'eliminazione
+        this.router.navigate(['/']);
       },
       error: (error) => {
         console.error('Error deleting meme:', error);
