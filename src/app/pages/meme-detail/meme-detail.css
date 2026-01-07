@@ -1,26 +1,204 @@
+/* ============================================
+   ACTION BAR - DESKTOP & MOBILE
+   Mobile-First Responsive Design
+   ============================================ */
+
+/* DESKTOP ACTION BAR - Top Right, Minimal & Elegant */
+.action-bar-desktop {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  display: flex;
+  gap: 0.5rem;
+  z-index: 20;
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: var(--radius-xl, 20px);
+  font-size: var(--font-size-sm, 0.9rem);
+  font-weight: var(--font-weight-medium, 500);
+  cursor: pointer;
+  transition: all var(--transition-fast, 0.2s);
+  backdrop-filter: blur(10px);
+  /* Accessibilità: area minima di click */
+  min-height: 44px;
+}
+
+.action-btn svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.action-btn-close {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--color-text-primary, #fff);
+}
+
+.action-btn-close:hover {
+  background: rgba(108, 99, 255, 0.2);
+  color: var(--color-primary, #6c63ff);
+  box-shadow: 0 0 20px rgba(108, 99, 255, 0.3);
+}
+
+.action-btn-edit {
+  background: rgba(96, 165, 250, 0.2);
+  color: #60a5fa;
+}
+
+.action-btn-edit:hover {
+  background: rgba(96, 165, 250, 0.3);
+  color: #fff;
+  box-shadow: 0 0 20px rgba(96, 165, 250, 0.4);
+}
+
+.action-btn-delete {
+  background: rgba(239, 68, 68, 0.2);
+  color: var(--color-danger, #ef4444);
+  border: 1px solid rgba(239, 68, 68, 0.3); /* Bordo per maggiore enfasi */
+  font-weight: var(--font-weight-semibold, 600); /* Testo più bold */
+}
+
+.action-btn-delete:hover {
+  background: rgba(239, 68, 68, 0.3);
+  color: #fff;
+  border-color: var(--color-danger, #ef4444);
+  box-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
+  transform: translateY(-2px); /* Leggero lift effect */
+}
+
+/* MOBILE ACTION BAR - Bottom Sticky, Touch-Friendly
+   Ergonomic design for one-handed usage
+   Minimum touch target: 56px (WCAG AAA compliant)
+*/
+.action-bar-mobile {
+  display: none; /* Hidden on desktop */
+}
+
+@media (max-width: 768px) {
+  /* Hide desktop action bar on mobile */
+  .action-bar-desktop {
+    display: none;
+  }
+
+  /* Show mobile action bar */
+  .action-bar-mobile {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0.5rem;
+    background: rgba(30, 30, 30, 0.98);
+    backdrop-filter: blur(20px);
+    border-top: 2px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.4);
+    z-index: 200; /* Above comment form */
+    gap: 0.4rem;
+  }
+
+  .action-btn-mobile {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.15rem;
+    padding: 0.5rem 0.3rem;
+    min-height: 48px; /* Touch-friendly ma più compatto */
+    border: none;
+    border-radius: var(--radius-md, 12px);
+    font-size: 0.65rem;
+    font-weight: var(--font-weight-medium, 500);
+    cursor: pointer;
+    transition: all var(--transition-fast, 0.2s);
+    -webkit-tap-highlight-color: transparent; /* Remove iOS tap highlight */
+  }
+
+  .action-btn-mobile svg {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+  }
+
+  .action-btn-mobile span {
+    white-space: nowrap;
+    font-size: 0.65rem;
+  }
+
+  .action-btn-close-mobile {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--color-text-primary, #fff);
+  }
+
+  .action-btn-close-mobile:active {
+    background: rgba(108, 99, 255, 0.3);
+    color: var(--color-primary, #6c63ff);
+    transform: scale(0.95);
+  }
+
+  .action-btn-edit-mobile {
+    background: rgba(96, 165, 250, 0.2);
+    color: #60a5fa;
+  }
+
+  .action-btn-edit-mobile:active {
+    background: rgba(96, 165, 250, 0.4);
+    color: #fff;
+    transform: scale(0.95);
+  }
+
+  .action-btn-delete-mobile {
+    background: rgba(239, 68, 68, 0.2);
+    color: var(--color-danger, #ef4444);
+    border: 1px solid rgba(239, 68, 68, 0.3); /* Bordo distintivo */
+    font-weight: var(--font-weight-semibold, 600);
+  }
+
+  .action-btn-delete-mobile:active {
+    background: rgba(239, 68, 68, 0.5); /* Più prominente al touch */
+    color: #fff;
+    border-color: var(--color-danger, #ef4444);
+    transform: scale(0.95);
+    box-shadow: 0 0 15px rgba(239, 68, 68, 0.6); /* Glow effect */
+  }
+}
+
+/* ============================================
+   MAIN CONTAINER & CONTENT
+   ============================================ */
+
 .detail-container {
   max-width: 800px;
   margin: 7.5rem auto 2rem;
   padding: 0 2rem;
   position: relative;
+  padding-bottom: 2rem; /* Spazio extra per evitare sovrapposizioni */
 }
 
 .meme-content {
   background: #1e1e1e;
-  border-radius: 20px;  /* Aumentato border-radius */
+  border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);  /* Ombra più pronunciata */
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
 }
 
 .header {
-  padding: 2rem;  /* Aumentato padding */
+  padding: 2rem;
   border-bottom: 1px solid #333;
 }
 
 .header h1 {
   color: #fff;
-  margin-bottom: 1rem;  /* Aumentato margin */
-  font-size: 1.75rem;  /* Aumentato font size */
+  margin-bottom: 1rem;
+  font-size: 1.75rem;
 }
 
 .author {
@@ -32,18 +210,24 @@
 }
 
 .image-container {
-  padding: 1rem 0;  /* Aggiunto padding verticale */
+  padding: 1rem 0;
   background: #000;
   display: flex;
   justify-content: center;
 }
 
+.image-container img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
 .tags {
-  padding: 1.5rem 2rem;  /* Aumentato padding */
+  padding: 1.5rem 2rem;
   display: flex;
-  gap: 0.75rem;  /* Aumentato gap */
+  gap: 0.75rem;
   flex-wrap: wrap;
-  border-bottom: 1px solid #333;  /* Aggiunto bordo */
+  border-bottom: 1px solid #333;
 }
 
 .tag {
@@ -119,9 +303,13 @@
   color: #f56565;
 }
 
+/* ============================================
+   COMMENTS SECTION
+   ============================================ */
+
 .comments-section {
-  padding: 2rem;  /* Aumentato padding */
-  padding-bottom: 7rem;  /* Spazio per il form dei commenti */
+  padding: 2rem;
+  padding-bottom: 12rem; /* Spazio per form commenti (5rem) + action bar mobile (7rem) */
 }
 
 .comments-section h2 {
@@ -133,21 +321,21 @@
 .comments-list {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;  /* Aumentato gap */
+  gap: 1.5rem;
 }
 
 .comment {
-  padding: 0.75rem;  /* Ridotto da 1.25rem */
+  padding: 0.75rem;
   background: rgba(255, 255, 255, 0.05);
   border-radius: 12px;
-  position: relative;  /* Per posizionare la data */
+  position: relative;
 }
 
 .comment-author {
   color: #6c63ff;
   font-weight: 500;
   margin-bottom: 0.5rem;
-  padding-right: 6rem;  /* Spazio per la data */
+  padding-right: 6rem;
 }
 
 .comment-content {
@@ -162,91 +350,16 @@
   font-size: 0.8rem;
 }
 
-.close-button {
-  position: absolute;
-  top: 2rem;  /* Allineato con il padding del header */
-  right: 3rem; /* Allineato con il padding del header */
-  background: rgba(0, 0, 0, 0.2);
-  border: none;
-  color: #fff;
-  padding: 0.5rem 1rem;
-  border-radius: 20px;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  z-index: 10;
+.no-comments {
+  text-align: center;
+  color: #666;
+  padding: 2rem;
+  font-style: italic;
 }
 
-.close-button:hover {
-  background: rgba(108, 99, 255, 0.2);
-  color: #6c63ff;
-}
-
-.close-button svg {
-  width: 24px;
-  height: 24px;
-}
-
-.delete-button {
-  position: absolute;
-  top: 2rem;
-  right: 8.2rem;
-  background: rgba(239, 68, 68, 0.2);
-  border: none;
-  color: #ef4444;
-  padding: 0.75rem;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  z-index: 19;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-}
-
-.delete-button:hover {
-  background: rgba(239, 68, 68, 0.3);
-  color: #fff;
-  box-shadow: 0 0 15px rgba(239, 68, 68, 0.2);
-}
-
-.delete-button svg {
-  width: 20px;
-  height: 20px;
-  transition: width 0.2s, height 0.2s;
-}
-
-.owner-actions {
-  position: absolute;
-  top: 2rem;
-  right: 8rem;
-  display: flex;
-  gap: 1rem;
-  z-index: 10;
-}
-
-.edit-button {
-  background: rgba(96, 165, 250, 0.2);
-  border: none;
-  color: #60a5fa;
-  padding: 0.5rem;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-}
-
-.edit-button:hover {
-  background: rgba(96, 165, 250, 0.3);
-  color: #fff;
-  box-shadow: 0 0 15px rgba(96, 165, 250, 0.2);
-}
+/* ============================================
+   EDIT FORM
+   ============================================ */
 
 .edit-form {
   padding: 1rem 2rem;
@@ -262,6 +375,13 @@
   border: 2px solid rgba(255, 255, 255, 0.1);
   background: rgba(255, 255, 255, 0.1);
   color: #fff;
+  font-family: inherit;
+}
+
+.edit-form input:focus {
+  outline: none;
+  border-color: #6c63ff;
+  background: rgba(255, 255, 255, 0.15);
 }
 
 .edit-actions {
@@ -276,6 +396,12 @@
   border: none;
   border-radius: 8px;
   cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.save-button:hover {
+  background: #3b82f6;
 }
 
 .cancel-button {
@@ -285,7 +411,17 @@
   border: none;
   border-radius: 8px;
   cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
 }
+
+.cancel-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* ============================================
+   COMMENT FORM
+   ============================================ */
 
 .comment-form {
   position: fixed;
@@ -294,8 +430,8 @@
   right: 0;
   display: flex;
   gap: 1rem;
-  padding: 1.25rem 2rem;  /* Aumentato padding */
-  background: rgba(30, 30, 30, 0.95);  /* Aggiunto blur effect */
+  padding: 1.25rem 2rem;
+  background: rgba(30, 30, 30, 0.95);
   backdrop-filter: blur(10px);
   border-top: 2px solid rgba(255, 255, 255, 0.1);
   border-left: 1px solid rgba(255, 255, 255, 0.1);
@@ -304,7 +440,7 @@
   z-index: 100;
   max-width: 750px;
   margin: 0 auto;
-  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);  /* Aggiunto ombra sottile */
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .comment-form input {
@@ -315,6 +451,7 @@
   background: rgba(255, 255, 255, 0.1);
   color: #fff;
   transition: all 0.3s ease;
+  font-family: inherit;
 }
 
 .comment-form input:focus {
@@ -331,19 +468,17 @@
   border: none;
   border-radius: 8px;
   cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
 }
 
-.title-container {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  position: relative;
-  min-height: 44px;
+.comment-form button:hover {
+  background: #5a52d5;
 }
 
-.title-container h1 {
-  margin: 0;
-}
+/* ============================================
+   NOTIFICATIONS
+   ============================================ */
 
 .delete-toast {
   position: fixed;
@@ -360,7 +495,6 @@
   text-align: center;
   border: none;
   animation: slideInRight 0.2s cubic-bezier(.4,2,.6,1) both;
-  /* minimal: no border, no shadow, square corners */
 }
 
 @keyframes slideInRight {
@@ -374,111 +508,153 @@
   }
 }
 
-@media (max-width: 900px) {
+.loading,
+.error {
+  text-align: center;
+  padding: 2rem;
+  color: #fff;
+}
+
+.error {
+  color: #ef4444;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN - MOBILE OPTIMIZATIONS
+   ============================================ */
+
+@media (max-width: 768px) {
   .detail-container {
-    max-width: 98vw;
-    margin: 15rem auto 1rem !important;
+    max-width: 100%;
+    margin: 8rem auto 0; /* Aumentato per vedere titolo e autore */
     padding: 0 0.5rem;
+    padding-bottom: 12rem; /* Spazio ottimizzato per form + action bar */
   }
+
+  .meme-content {
+    border-radius: 16px;
+    margin-bottom: 1rem;
+    padding-top: 7.5rem;
+  }
+
   .header {
-    padding: 1.2rem;
+    padding: 1.5rem;
   }
+
   .header h1 {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
   }
-  .subtitle, .author {
+
+  .author {
     font-size: 0.9rem;
   }
-  .close-button, .delete-button {
-    top: 1rem;
-    right: 1rem;
-    padding: 0.4rem 0.8rem;
-    font-size: 0.85rem;
+
+  .tags {
+    padding: 1rem 1.5rem;
   }
-  .delete-button {
-    top: 1rem;
-    right: 5.2rem;
+
+  .stats {
+    padding: 1rem 1.5rem;
   }
-  .edit-button {
-    width: 26px;
-    height: 26px;
-    padding: 0.2rem;
-  }
-  .edit-form {
-    padding: 0.7rem 1rem;
-  }
+
   .comments-section {
-    padding: 1.2rem;
-    padding-bottom: 5.5rem;
+    padding: 1.5rem;
+    padding-bottom: 13rem; /* Spazio per form + action bar */
   }
-  .delete-button svg {
-    width: 13px;
-    height: 13px;
+
+  .comment-form {
+    bottom: 58px; /* Posizionato sopra action bar (48px + 10px gap) */
+    padding: 1rem;
+    border-radius: 16px 16px 0 0;
+    max-width: 100%;
+  }
+
+  .comment-form input {
+    font-size: 16px; /* Prevent iOS zoom */
+  }
+
+  .edit-form {
+    padding: 1rem;
+  }
+
+  .edit-form input {
+    font-size: 16px; /* Prevent iOS zoom */
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 480px) {
   .detail-container {
-    max-width: 100vw;
-    margin: 15rem auto 0.5rem !important;
-    padding: 0 0.1rem;
+    margin: 7.5rem auto 0;
+    padding: 0 0.25rem;
+    padding-bottom: 13rem; /* Spazio ottimizzato per schermi piccoli */
   }
+
   .header {
-    padding: 0.7rem;
+    padding: 1rem;
   }
+
   .header h1 {
-    font-size: 1rem;
+    font-size: 1.1rem;
   }
-  .subtitle, .author {
-    font-size: 0.8rem;
-  }
-  .close-button, .delete-button {
-    top: 0.5rem;
-    right: 0.5rem;
-    padding: 0.2rem 0.5rem;
-    font-size: 0.8rem;
-  }
-  .delete-button {
-    top: 0.2rem;
-    right: 4.2rem;
-  }
-  .edit-button {
-    width: 20px;
-    height: 20px;
-    padding: 0.1rem;
-  }
-  .edit-form {
-    padding: 0.5rem 0.5rem;
+
+  .tags {
+    padding: 0.75rem 1rem;
     gap: 0.5rem;
   }
+
+  .tag {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.8rem;
+  }
+
+  .stats {
+    padding: 0.75rem 1rem;
+  }
+
   .comments-section {
-    padding: 0.7rem;
-    padding-bottom: 5.5rem;
+    padding: 1rem;
+    padding-bottom: 14rem; /* Spazio per form + action bar su mobile */
   }
+
+  .comment {
+    padding: 0.6rem;
+  }
+
+  .comment-author {
+    font-size: 0.85rem;
+    padding-right: 5rem;
+  }
+
+  .comment-content {
+    font-size: 0.9rem;
+  }
+
+  .comment-date {
+    font-size: 0.7rem;
+    top: 0.6rem;
+    right: 0.6rem;
+  }
+
   .comment-form {
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0rem; /* Sposta il form più in alto rispetto al bordo */
-    padding: 0.7rem 0.5rem;
-    max-width: 100vw;
-    margin: 0 auto;
-    z-index: 100;
-    background: rgba(30, 30, 30, 0.95);
-    border-radius: 20px 20px 0 0;
-    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
-    display: flex;
-    gap: 0.7rem;
+    padding: 0.75rem;
+    gap: 0.5rem;
+    bottom: 60px; /* Posizionato sopra action bar compatta */
   }
-  .delete-toast {
-    right: 0.7rem;
-    bottom: 0.7rem;
+
+  .comment-form input {
+    padding: 0.7rem;
+  }
+
+  .comment-form button {
     padding: 0.7rem 1rem;
-    font-size: 0.95rem;
-    min-width: 120px;
+    font-size: 0.9rem;
   }
-  .delete-button svg {
-    width: 10px;
-    height: 10px;
+
+  .delete-toast {
+    right: 0.5rem;
+    bottom: 0.5rem;
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+    min-width: 150px;
   }
 }

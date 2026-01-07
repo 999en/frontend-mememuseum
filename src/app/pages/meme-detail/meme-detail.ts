@@ -23,14 +23,30 @@ export class MemeDetail implements OnInit {
   isLoading = true;
   error?: string;
   userVote: 'up' | 'down' | null = null;
-  isOwner: boolean = false;
+  private currentUser: any = null;
   isEditing = false;
   editForm = {
     title: '',
     tags: ''
   };
-  showDeleteConfirm = false; // aggiungi stato per il messaggio di conferma
-  showDeleteSuccess = false; // notifica eliminazione
+  showDeleteConfirm = false;
+  showDeleteSuccess = false;
+
+  /**
+   * Getter per verificare se l'utente corrente può modificare il meme
+   * Controlla se l'utente è il proprietario del meme
+   */
+  get canModify(): boolean {
+    if (!this.currentUser || !this.meme) return false;
+    return this.meme.uploader.username === this.currentUser.username;
+  }
+
+  /**
+   * Alias per retrocompatibilità
+   */
+  get isOwner(): boolean {
+    return this.canModify;
+  }
 
   constructor(
     private route: ActivatedRoute,
@@ -66,9 +82,8 @@ export class MemeDetail implements OnInit {
 
   private checkOwnership() {
     this.authService.getCurrentUser().subscribe(currentUser => {
-      this.isOwner = !!currentUser && 
-                     !!this.meme && 
-                     this.meme.uploader.username === currentUser.username;
+      this.currentUser = currentUser;
+      // canModify getter gestisce automaticamente il check
     });
   }
 
@@ -222,31 +237,52 @@ export class MemeDetail implements OnInit {
     this.router.navigate(['/'], { queryParams: { search: tag } });
   }
 
+  /**
+   * Gestisce l'eliminazione del meme con conferma
+   * Mostra un dialog di conferma prima di procedere
+   */
   onDeleteMeme() {
-    if (!this.meme || !this.isOwner) return;
-    this.showDeleteConfirm = true; // mostra il messaggio di conferma
+    if (!this.meme || !this.canModify) return;
+    this.showDeleteConfirm = true;
   }
 
+  /**
+   * Conferma ed esegue l'eliminazione del meme
+   * Naviga alla home dopo il successo
+   */
   confirmDeleteMeme() {
-    if (!this.meme || !this.isOwner) return;
+    if (!this.meme || !this.canModify) return;
+    
     this.memeService.deleteMeme(this.meme._id).subscribe({
       next: () => {
-        // Naviga immediatamente alla home dopo l'eliminazione
-        this.router.navigate(['/']);
+        this.showDeleteConfirm = false;
+        // Mostra notifica di successo
+        this.showDeleteSuccess = true;
+        // Naviga alla home dopo 1 secondo
+        setTimeout(() => {
+          this.router.navigate(['/']);
+        }, 1000);
       },
       error: (error) => {
         console.error('Error deleting meme:', error);
-        // Gestisci l'errore (magari mostra un messaggio all'utente)
+        this.showDeleteConfirm = false;
+        // Gestisci l'errore mostrando un messaggio all'utente
+        this.error = 'Errore durante l\'eliminazione del meme';
       }
     });
-    this.showDeleteConfirm = false;
   }
 
   cancelDeleteMeme() {
     this.showDeleteConfirm = false;
   }
 
+  /**
+   * Attiva la modalità di modifica inline
+   * Precompila il form con i dati correnti del meme
+   */
   startEdit() {
+    if (!this.canModify) return;
+    
     this.isEditing = true;
     if (this.meme) {
       this.editForm.title = this.meme.title;
@@ -254,6 +290,9 @@ export class MemeDetail implements OnInit {
     }
   }
 
+  /**
+   * Annulla la modalità di modifica
+   */
   cancelEdit() {
     this.isEditing = false;
     this.editForm = {
@@ -262,8 +301,12 @@ export class MemeDetail implements OnInit {
     };
   }
 
+  /**
+   * Salva le modifiche al meme
+   * Ricarica i dati aggiornati dall'API
+   */
   saveEdit() {
-    if (!this.meme || !this.isOwner) return;
+    if (!this.meme || !this.canModify) return;
 
     const tags = this.editForm.tags
       .split(',')
@@ -275,11 +318,12 @@ export class MemeDetail implements OnInit {
       tags: tags
     }).subscribe({
       next: () => {
-        this.loadMeme(this.meme!._id); // Richiama il meme aggiornato
+        this.loadMeme(this.meme!._id);
         this.isEditing = false;
       },
       error: (error) => {
         console.error('Error updating meme:', error);
+        this.error = 'Errore durante l\'aggiornamento del meme';
       }
     });
   }

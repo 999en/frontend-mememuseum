@@ -11,16 +11,31 @@
     (cancel)="cancelDeleteMeme()"
   ></app-confirm-dialog>
 
+  <!-- DESKTOP ACTION BAR - Top Right -->
+  <div class="action-bar-desktop" *ngIf="!isEditing">
+    <button class="action-btn action-btn-close" (click)="onClose()" title="Chiudi" aria-label="Chiudi dettaglio meme">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+      <span class="action-label">Chiudi</span>
+    </button>
+    <button *ngIf="canModify" class="action-btn action-btn-edit" (click)="startEdit()" title="Modifica meme" aria-label="Modifica meme">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+      </svg>
+      <span class="action-label">Modifica</span>
+    </button>
+    <button *ngIf="canModify" class="action-btn action-btn-delete" (click)="onDeleteMeme()" title="Elimina meme" aria-label="Elimina meme">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2M10 11v6M14 11v6"/>
+      </svg>
+      <span class="action-label">Elimina</span>
+    </button>
+  </div>
+
   <div class="meme-content">
-    <!-- Nascondi i bottoni durante la modifica -->
-    <ng-container *ngIf="!isEditing">
-      <button class="close-button" (click)="onClose()">Chiudi</button>
-      <button *ngIf="isOwner" class="delete-button" (click)="onDeleteMeme()" title="Elimina post">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-          <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2M10 11v6M14 11v6"/>
-        </svg>
-      </button>
-    </ng-container>
 
     <!-- Form modifica -->
     <div class="edit-form" *ngIf="isEditing">
@@ -43,15 +58,7 @@
     </div>
 
     <div class="header">
-      <div class="title-container">
-        <h1>{{ meme.title }}</h1>
-        <button *ngIf="isOwner" class="edit-button" (click)="startEdit()" title="Modifica post">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-          </svg>
-        </button>
-      </div>
+      <h1>{{ meme.title }}</h1>
       <p class="author">Postato da {{ meme.uploader.username || 'Utente sconosciuto' }}</p>
     </div>
 
@@ -105,6 +112,30 @@
     >
     <button type="submit">Invia</button>
   </form>
+
+  <!-- MOBILE ACTION BAR - Bottom Sticky -->
+  <div class="action-bar-mobile" *ngIf="!isEditing">
+    <button class="action-btn-mobile action-btn-close-mobile" (click)="onClose()" aria-label="Chiudi dettaglio meme">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+      <span>Chiudi</span>
+    </button>
+    <button *ngIf="canModify" class="action-btn-mobile action-btn-edit-mobile" (click)="startEdit()" aria-label="Modifica meme">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+      </svg>
+      <span>Modifica</span>
+    </button>
+    <button *ngIf="canModify" class="action-btn-mobile action-btn-delete-mobile" (click)="onDeleteMeme()" aria-label="Elimina meme">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2M10 11v6M14 11v6"/>
+      </svg>
+      <span>Elimina</span>
+    </button>
+  </div>
 </div>
 
 <!-- Notifica eliminazione successo -->
