@@ -11,31 +11,9 @@
     (cancel)="cancelDeleteMeme()"
   ></app-confirm-dialog>
 
-  <!-- DESKTOP ACTION BAR - Top Right -->
-  <div class="action-bar-desktop" *ngIf="!isEditing">
-    <button class="action-btn action-btn-close" (click)="onClose()" title="Chiudi" aria-label="Chiudi dettaglio meme">
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-        <line x1="18" y1="6" x2="6" y2="18"></line>
-        <line x1="6" y1="6" x2="18" y2="18"></line>
-      </svg>
-      <span class="action-label">Chiudi</span>
-    </button>
-    <button *ngIf="canModify" class="action-btn action-btn-edit" (click)="startEdit()" title="Modifica meme" aria-label="Modifica meme">
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-      </svg>
-      <span class="action-label">Modifica</span>
-    </button>
-    <button *ngIf="canModify" class="action-btn action-btn-delete" (click)="onDeleteMeme()" title="Elimina meme" aria-label="Elimina meme">
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-        <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2M10 11v6M14 11v6"/>
-      </svg>
-      <span class="action-label">Elimina</span>
-    </button>
-  </div>
-
-  <div class="meme-content">
+  <!-- MAIN CONTENT COLUMN (Meme Card) -->
+  <div class="main-content-column">
+    <div class="meme-content">
 
     <!-- Form modifica -->
     <div class="edit-form" *ngIf="isEditing">
@@ -87,7 +65,8 @@
       </div>
     </div>
 
-    <div class="comments-section">
+    <!-- Comments Section - Visible on mobile, hidden on desktop (moved to sidebar) -->
+    <div class="comments-section comments-section-mobile">
       <h2>Commenti</h2>
       
       <div class="comments-list">
@@ -101,9 +80,65 @@
         </div>
       </div>
     </div>
+    </div>
   </div>
 
-  <form class="comment-form" (ngSubmit)="onSubmitComment(); commentForm.reset()" #commentForm="ngForm" autocomplete="off">
+  <!-- SIDEBAR COLUMN (Desktop Only - Actions + Comments) -->
+  <div class="sidebar-container">
+    <!-- Action Panel - Desktop -->
+    <div class="action-panel-desktop" *ngIf="!isEditing">
+      <button class="action-btn action-btn-close" (click)="onClose()" title="Chiudi" aria-label="Chiudi dettaglio meme">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+        <span class="action-label">Chiudi</span>
+      </button>
+      <button *ngIf="canModify" class="action-btn action-btn-edit" (click)="startEdit()" title="Modifica meme" aria-label="Modifica meme">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+          <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+        </svg>
+        <span class="action-label">Modifica</span>
+      </button>
+      <button *ngIf="canModify" class="action-btn action-btn-delete" (click)="onDeleteMeme()" title="Elimina meme" aria-label="Elimina meme">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2M10 11v6M14 11v6"/>
+        </svg>
+        <span class="action-label">Elimina</span>
+      </button>
+    </div>
+
+    <!-- Comments Section - Desktop (inside sidebar) -->
+    <div class="comments-section comments-section-desktop">
+      <h2>Commenti</h2>
+      
+      <div class="comments-list">
+        <div class="comment" *ngFor="let comment of meme.comments">
+          <p class="comment-author">{{ getCommentAuthor(comment) }}</p>
+          <p class="comment-content">{{ comment.text }}</p>
+          <span class="comment-date">{{ comment.createdAt | date }}</span>
+        </div>
+        <div *ngIf="meme.comments?.length === 0" class="no-comments">
+          Nessun commento presente
+        </div>
+      </div>
+    </div>
+
+    <!-- Comment Form - Desktop (inside sidebar) -->
+    <form class="comment-form comment-form-desktop" (ngSubmit)="onSubmitComment(); commentFormDesktop.reset()" #commentFormDesktop="ngForm" autocomplete="off">
+      <input 
+        type="text" 
+        [(ngModel)]="newComment"
+        name="comment"
+        placeholder="Aggiungi un commento..."
+      >
+      <button type="submit">Invia</button>
+    </form>
+  </div>
+
+  <!-- Comment Form - Mobile (fixed at bottom) -->
+  <form class="comment-form comment-form-mobile" (ngSubmit)="onSubmitComment(); commentFormMobile.reset()" #commentFormMobile="ngForm" autocomplete="off">
     <input 
       type="text" 
       [(ngModel)]="newComment"

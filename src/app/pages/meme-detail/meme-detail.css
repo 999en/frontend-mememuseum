@@ -3,14 +3,14 @@
    Mobile-First Responsive Design
    ============================================ */
 
-/* DESKTOP ACTION BAR - Top Right, Minimal & Elegant */
+/* DESKTOP ACTION PANEL - Inside Sidebar (Desktop Only) */
+.action-panel-desktop {
+  display: none; /* Hidden on mobile by default */
+}
+
+/* Legacy action bar desktop - deprecated but kept for smooth transition */
 .action-bar-desktop {
-  position: absolute;
-  top: 2rem;
-  right: 2rem;
-  display: flex;
-  gap: 0.5rem;
-  z-index: 20;
+  display: none;
 }
 
 .action-btn {
@@ -169,10 +169,23 @@
     transform: scale(0.95);
     box-shadow: 0 0 15px rgba(239, 68, 68, 0.6); /* Glow effect */
   }
+
+  /* Ensure mobile comment form is visible and styled correctly */
+  .comment-form-mobile {
+    bottom: 58px; /* Posizionato sopra action bar (48px + 10px gap) */
+    padding: 1rem;
+    border-radius: 16px 16px 0 0;
+    max-width: 100%;
+  }
+
+  .comment-form-mobile input {
+    font-size: 16px; /* Prevent iOS zoom */
+  }
 }
 
 /* ============================================
    MAIN CONTAINER & CONTENT
+   Mobile-First: Single Column Layout
    ============================================ */
 
 .detail-container {
@@ -181,6 +194,11 @@
   padding: 0 2rem;
   position: relative;
   padding-bottom: 2rem; /* Spazio extra per evitare sovrapposizioni */
+}
+
+/* Main content column wrapper (for desktop grid) */
+.main-content-column {
+  width: 100%;
 }
 
 .meme-content {
@@ -305,7 +323,19 @@
 
 /* ============================================
    COMMENTS SECTION
+   Mobile: visible in main content
+   Desktop: moved to sidebar
    ============================================ */
+
+/* Mobile version - visible by default */
+.comments-section-mobile {
+  display: block;
+}
+
+/* Desktop version - hidden on mobile */
+.comments-section-desktop {
+  display: none;
+}
 
 .comments-section {
   padding: 2rem;
@@ -348,6 +378,11 @@
   right: 0.75rem;
   color: #666;
   font-size: 0.8rem;
+}
+
+/* Sidebar container - hidden on mobile, visible on desktop */
+.sidebar-container {
+  display: none;
 }
 
 .no-comments {
@@ -421,9 +456,12 @@
 
 /* ============================================
    COMMENT FORM
+   Mobile: Fixed at bottom
+   Desktop: Inside sidebar
    ============================================ */
 
-.comment-form {
+/* Default: Mobile version (fixed at bottom) */
+.comment-form-mobile {
   position: fixed;
   bottom: 0;
   left: 0;
@@ -443,7 +481,13 @@
   box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.comment-form input {
+/* Desktop version (inside sidebar) - hidden by default */
+.comment-form-desktop {
+  display: none;
+}
+
+.comment-form-mobile input,
+.comment-form-desktop input {
   flex: 1;
   padding: 0.8rem;
   border-radius: 20px;
@@ -454,14 +498,16 @@
   font-family: inherit;
 }
 
-.comment-form input:focus {
+.comment-form-mobile input:focus,
+.comment-form-desktop input:focus {
   outline: none;
   border-color: #6c63ff;
   background-color: rgba(255, 255, 255, 0.15);
   box-shadow: 0 0 15px rgba(108, 99, 255, 0.2);
 }
 
-.comment-form button {
+.comment-form-mobile button,
+.comment-form-desktop button {
   padding: 0.8rem 1.5rem;
   background: #6c63ff;
   color: #fff;
@@ -472,7 +518,8 @@
   transition: all 0.2s ease;
 }
 
-.comment-form button:hover {
+.comment-form-mobile button:hover,
+.comment-form-desktop button:hover {
   background: #5a52d5;
 }
 
@@ -562,14 +609,14 @@
     padding-bottom: 13rem; /* Spazio per form + action bar */
   }
 
-  .comment-form {
+  .comment-form-mobile {
     bottom: 58px; /* Posizionato sopra action bar (48px + 10px gap) */
     padding: 1rem;
     border-radius: 16px 16px 0 0;
     max-width: 100%;
   }
 
-  .comment-form input {
+  .comment-form-mobile input {
     font-size: 16px; /* Prevent iOS zoom */
   }
 
@@ -635,17 +682,17 @@
     right: 0.6rem;
   }
 
-  .comment-form {
+  .comment-form-mobile {
     padding: 0.75rem;
     gap: 0.5rem;
     bottom: 60px; /* Posizionato sopra action bar compatta */
   }
 
-  .comment-form input {
+  .comment-form-mobile input {
     padding: 0.7rem;
   }
 
-  .comment-form button {
+  .comment-form-mobile button {
     padding: 0.7rem 1rem;
     font-size: 0.9rem;
   }
@@ -656,5 +703,176 @@
     padding: 0.75rem 1rem;
     font-size: 0.9rem;
     min-width: 150px;
+  }
+}
+
+/* ============================================
+   DESKTOP LAYOUT - TWO COLUMN GRID
+   Breakpoint: 992px and above
+   ============================================ */
+
+@media (min-width: 992px) {
+  /* Transform container to 2-column grid layout */
+  .detail-container {
+    display: grid;
+    grid-template-columns: 1fr 380px; /* Main content fluid, sidebar fixed */
+    gap: 2.5rem;
+    align-items: start;
+    max-width: 1400px;
+    margin: 6rem auto 2rem;
+    padding: 0 3rem;
+  }
+
+  /* Main content column - contains meme card */
+  .main-content-column {
+    width: 100%;
+    min-width: 0; /* Prevent grid blowout */
+  }
+
+  .meme-content {
+    margin-bottom: 0;
+  }
+
+  /* Hide mobile comments section on desktop */
+  .comments-section-mobile {
+    display: none;
+  }
+
+  /* Show and configure sidebar */
+  .sidebar-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    position: sticky;
+    top: 6rem; /* Stick below navbar */
+    max-height: calc(100vh - 8rem);
+    overflow-y: auto;
+    padding-right: 0.5rem;
+  }
+
+  /* Custom scrollbar for sidebar */
+  .sidebar-container::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .sidebar-container::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+  }
+
+  .sidebar-container::-webkit-scrollbar-thumb {
+    background: rgba(108, 99, 255, 0.3);
+    border-radius: 10px;
+  }
+
+  .sidebar-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(108, 99, 255, 0.5);
+  }
+
+  /* Action Panel - Desktop (inside sidebar) */
+  .action-panel-desktop {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1.5rem;
+    background: rgba(30, 30, 30, 0.8);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+  }
+
+  .action-panel-desktop .action-btn {
+    width: 100%;
+    justify-content: flex-start;
+    padding: 0.75rem 1.25rem;
+  }
+
+  /* Desktop comments section - inside sidebar */
+  .comments-section-desktop {
+    display: block;
+    padding: 1.5rem;
+    background: rgba(30, 30, 30, 0.6);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+
+  .comments-section-desktop h2 {
+    margin-bottom: 1.5rem;
+    font-size: 1.25rem;
+    color: #fff;
+    position: sticky;
+    top: 0;
+    background: rgba(30, 30, 30, 0.95);
+    padding: 0.5rem 0 1rem 0;
+    margin-top: -0.5rem;
+    z-index: 1;
+  }
+
+  .comments-section-desktop .comments-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .comments-section-desktop .comment {
+    padding: 0.75rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+  }
+
+  /* Hide mobile action bar on desktop */
+  .action-bar-mobile {
+    display: none;
+  }
+
+  /* Hide mobile comment form on desktop */
+  .comment-form-mobile {
+    display: none;
+  }
+
+  /* Show and configure desktop comment form inside sidebar */
+  .comment-form-desktop {
+    display: flex;
+    gap: 0.75rem;
+    padding: 1.25rem;
+    background: rgba(30, 30, 30, 0.6);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .comment-form-desktop input {
+    border-radius: 12px;
+  }
+
+  .comment-form-desktop button {
+    padding: 0.8rem 1.25rem;
+    border-radius: 8px;
+    white-space: nowrap;
+  }
+}
+
+/* ============================================
+   LARGE DESKTOP OPTIMIZATION (1600px+)
+   ============================================ */
+
+@media (min-width: 1600px) {
+  .detail-container {
+    grid-template-columns: 1fr 420px; /* Slightly wider sidebar */
+    gap: 3rem;
+    max-width: 1600px;
+  }
+
+  .sidebar-container {
+    gap: 2rem;
+  }
+
+  .action-panel-desktop {
+    padding: 2rem;
+  }
+
+  .comments-section-desktop {
+    padding: 2rem;
   }
 }
