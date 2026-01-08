@@ -194,31 +194,40 @@
 }
 
 .daily-meme-button {
-  background: linear-gradient(45deg, #f87171, #facc15, #4ade80, #60a5fa);
-  background-size: 300% 300%;
-  animation: shine 5s ease infinite;
+  background: linear-gradient(135deg, #6c63ff 0%, #5a52d5 100%);
   color: white;
-  font-weight: bold;
+  font-weight: 600;
   padding: 8px 18px;
-  border-radius: 10px;
-  border: none;
-  font-size: 1.05rem;
+  border-radius: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  font-size: 1rem;
   cursor: pointer;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 12px rgba(108, 99, 255, 0.3);
   height: 40px;
   min-height: 40px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.daily-meme-button:hover {
+  background: linear-gradient(135deg, #5a52d5 0%, #4a42c5 100%);
+  box-shadow: 0 6px 20px rgba(108, 99, 255, 0.5);
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.daily-meme-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(108, 99, 255, 0.4);
 }
 
 .daily-meme-icon {
   display: inline-block;
   vertical-align: middle;
-  margin-right: 8px;
-}
-
-@keyframes shine {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  flex-shrink: 0;
 }
 
 .home-container {
@@ -247,9 +256,9 @@
     margin-top: 0.5rem;
   }
   .daily-meme-button {
-    font-size: 1rem;
+    font-size: 0.95rem;
     padding: 7px 14px;
-    border-radius: 9px;
+    border-radius: 18px;
     height: 36px;
     min-height: 36px;
   }
@@ -283,9 +292,9 @@
     margin-top: 0.3rem;
   }
   .daily-meme-button {
-    font-size: 0.97rem;
-    padding: 6px 10px;
-    border-radius: 8px;
+    font-size: 0.9rem;
+    padding: 6px 12px;
+    border-radius: 16px;
     height: 32px;
     min-height: 32px;
   }
