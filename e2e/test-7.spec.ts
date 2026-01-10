@@ -2,7 +2,6 @@
 //verifica che il conteggio dei voti venga aggiornato immediatamente.
 
 import { test, expect } from '@playwright/test';
-import path from 'path';
 
 test('Upvote-Downvote test', async ({ page }) => {
   await page.goto('http://localhost:3000/');
@@ -16,7 +15,7 @@ test('Upvote-Downvote test', async ({ page }) => {
   //Carico prima il meme presente nella cartella del test
   await page.getByRole('button', { name: 'Upload Meme' }).click();
   await page.getByText('Clicca per caricare o trascina quiPNG, JPG, GIF o WebP (MAX. 10MB)').click();
-  await page.locator('input[type="file"]').setInputFiles('e2e/memetest.jpeg');
+  await page.locator('input[type="file"]').setInputFiles('frontend-mememuseum/e2e/memetest.jpeg');
   await page.getByRole('textbox', { name: 'Dai un titolo al tuo meme...' }).click();
   await page.getByRole('textbox', { name: 'Dai un titolo al tuo meme...' }).fill('Titolo test voto');
   await page.getByRole('textbox', { name: 'funny, meme, gaming, cat,' }).click();
@@ -28,7 +27,7 @@ test('Upvote-Downvote test', async ({ page }) => {
   //Cerco il meme appena caricato tramite tag
   await page.getByRole('textbox', { name: 'Cerca meme per tag...' }).click();
   await page.getByRole('textbox', { name: 'Cerca meme per tag...' }).fill('tagtest1');
-  await page.getByRole('button').filter({ hasText: /^$/ }).click();
+  await page.locator('.search-button').click();
   await expect(page.getByText('#TagTest1').first()).toBeVisible();
 
   //Voto il meme appena caricato
@@ -42,8 +41,8 @@ test('Upvote-Downvote test', async ({ page }) => {
   //Eliminiamo il meme appena caricato
   await page.getByRole('img', { name: 'Titolo test voto' }).click();
   await expect(page.getByText('Postato da AngularMaster')).toBeVisible();
-  await expect(page.getByRole('button', { name: 'Elimina post' })).toBeVisible();
-  await page.getByRole('button', { name: 'Elimina post' }).click();
+  await expect(page.getByRole('button', { name: 'Elimina' })).toBeVisible();
+  await page.getByRole('button', { name: 'Elimina' }).click();
   await expect(page.getByText('Elimina MemeSei sicuro di')).toBeVisible();
   await page.getByRole('button', { name: 'Elimina', exact: true }).click();
   

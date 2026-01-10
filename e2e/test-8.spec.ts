@@ -3,7 +3,6 @@
 //necessità di ricaricare la pagina.
 
 import { test, expect } from '@playwright/test';
-import path from 'path';
 
 test('Comment test', async ({ page }) => {
   await page.goto('http://localhost:3000/');
@@ -17,7 +16,7 @@ test('Comment test', async ({ page }) => {
   //Carico prima il meme presente nella cartella del test
   await page.getByRole('button', { name: 'Upload Meme' }).click();
   await page.getByText('Clicca per caricare o trascina quiPNG, JPG, GIF o WebP (MAX. 10MB)').click();
-  await page.locator('input[type="file"]').setInputFiles('e2e/memetest.jpeg');
+  await page.locator('input[type="file"]').setInputFiles('frontend-mememuseum/e2e/memetest.jpeg');
   await page.getByRole('textbox', { name: 'Dai un titolo al tuo meme...' }).click();
   await page.getByRole('textbox', { name: 'Dai un titolo al tuo meme...' }).fill('Titolo test commento');
   await page.getByRole('textbox', { name: 'funny, meme, gaming, cat,' }).click();
@@ -29,16 +28,16 @@ test('Comment test', async ({ page }) => {
   
   
   //Commento e verifica che il commento sia visibile
-  await page.getByRole('img', { name: 'Titolo test commento' }).click();
+  await page.getByRole('heading', { name: 'Titolo test commento' }).first().click();
   await expect(page.getByText('Postato da AngularMaster')).toBeVisible();
   await page.getByRole('textbox', { name: 'Aggiungi un commento...' }).click();
   await page.getByRole('textbox', { name: 'Aggiungi un commento...' }).fill('commento questo post e premo invia');
   await page.getByRole('button', { name: 'Invia' }).click();
-  await expect(page.getByText('AngularMastercommento questo')).toBeVisible();
+  await expect(page.getByText('AngularMastercommento questo').nth(1)).toBeVisible();
   
     //Eliminiamo il meme appena caricato
-    await expect(page.getByRole('button', { name: 'Elimina post' })).toBeVisible();
-    await page.getByRole('button', { name: 'Elimina post' }).click();
+    await expect(page.getByRole('button', { name: 'Elimina' })).toBeVisible();
+    await page.getByRole('button', { name: 'Elimina' }).click();
     await expect(page.getByText('Elimina MemeSei sicuro di')).toBeVisible();
     await page.getByRole('button', { name: 'Elimina', exact: true }).click();
   

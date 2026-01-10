@@ -16,6 +16,7 @@ export class LoginPage {
   password: string = '';
   error: string = '';
   isLoading: boolean = false;
+  showPassword: boolean = false;
 
   constructor(
     private router: Router,
@@ -53,5 +54,9 @@ export class LoginPage {
 
   goToRegister() {
     this.router.navigate(['/register']);
+  }
+
+  togglePassword() {
+    this.showPassword = !this.showPassword;
   }
 }
